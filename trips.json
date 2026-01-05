@@ -1,12 +1,22 @@
 [
   {
-    "resort_name": "Val Thorens",
-    "flight_out_date": "2026-02-14",
-    "ski_start_date": "2026-02-15",
-    "ski_end_date": "2026-02-21",
-    "flight_back_date": "2026-02-22",
-    "lat": 45.2983,
-    "lon": 6.5824,
-    "road_check": "Moûtiers to Val Thorens"
+    "resort_name": "Livigno",
+    "flight_out_date": "2026-01-22",
+    "ski_start_date": "2026-01-23",
+    "ski_end_date": "2026-01-26",
+    "flight_back_date": "2026-01-27",
+    "lat": 46.5386,
+    "lon": 10.1357,
+    "road_check": "Milan to Livigno"
+  },
+  {
+    "resort_name": "Les Arcs",
+    "flight_out_date": "2026-03-07",
+    "ski_start_date": "2026-03-08",
+    "ski_end_date": "2026-03-13",
+    "flight_back_date": "2026-03-14",
+    "lat": 45.5717,
+    "lon": 6.8078,
+    "road_check": "Lyon to Les Arcs"
   }
 ]
