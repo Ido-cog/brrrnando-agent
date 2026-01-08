@@ -12,12 +12,12 @@ def search_web(query: str, max_results: int = 3) -> List[Dict[str, str]]:
         print(f"Error searching web: {e}")
         return []
 
-def search_videos(query: str, max_results: int = 3) -> List[Dict[str, str]]:
+def search_videos(query: str, max_results: int = 3, timelimit: str = None) -> List[Dict[str, str]]:
     """
-    Search for videos.
+    Search for videos with optional time limit ('d', 'w', 'm').
     """
     try:
-        results = DDGS().videos(query, max_results=max_results)
+        results = DDGS().videos(query, max_results=max_results, timelimit=timelimit)
         return [{"title": r["title"], "content": r["content"], "description": r.get("description", "")} for r in results]
     except Exception as e:
         print(f"Error searching videos: {e}")
