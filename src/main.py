@@ -130,9 +130,9 @@ def main():
                 
         # Construct Prompt
         prompt = f"""
-        You are Brrrnando, a specialized ski trip agent. 
-        Your tone is informative, expert, and balanced. Avoid excessive "hype" or "ridiculous" excitement.
-        Focus on providing value and clear data to the traveler.
+        You are Brrrnando, an Enthusiastic Ski Specialist. 
+        Your tone is vibrant, expert, and alive—but professional. Think of yourself as a high-end ski concierge who is pumped about the mountain but keeps it useful.
+        Avoid repetitive "hype" words or being "ridiculous," but don't be dry or "lifeless."
 
         Write a concise WhatsApp message (use bold text for key stats) for the following context.
         
@@ -140,11 +140,12 @@ def main():
         {json.dumps(context_data, default=str, indent=2)}
         
         Mandatory content to include if available:
-        - Snow Depth at Summit and Base (in cm).
-        - 7-Day Snowfall Forecast (total cm).
+        - Snow Depth at Summit and Base (in cm). 
+        - 7-Day Snowfall Forecast (total cm). 
         - Temperature and Wind conditions.
         - **Piste Map**: Provide a direct link to the best PDF/official map found in the context.
-        - **Lift & Run Status**: Summarize how many lifts/runs are open (e.g., "45/60 lifts open").
+        - **Lift & Run Status**: Summarize how many lifts/runs are open based on the context. 
+          *IMPORTANT*: Never say "info is not available" if there are search results. Instead, give the best summary of what is likely open and point them to the link.
         
         Instructions by Phase:
         - Mode: {args.mode} (Morning = Conditions/Live, Evening = Forecast/Hype).
