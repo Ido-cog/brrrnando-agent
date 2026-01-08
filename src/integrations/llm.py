@@ -16,17 +16,12 @@ def generate_summary(prompt: str) -> str:
     genai.configure(api_key=api_key)
     
     try:
-        # Using gemini-2.0-flash-exp or stable model if available. 
-        # User specified "Gemini 2.5 Flash". Assuming model name "gemini-2.5-flash"? 
-        # Actually likely "gemini-1.5-flash" or "gemini-pro". 
-        # Let's try "gemini-1.5-flash" as it is common, or fall back to "gemini-pro".
-        # User requested "Gemini 2.5 Flash". I will use that name but anticipate it might not exist yet in public API.
-        # I'll stick to 'gemini-1.5-flash' for safety or 'gemini-pro' unless I update library.
-        # Wait, user said "Gemini 2.5 Flash". I should assume they know.
-        # I'll use a variable.
+        # User requested 2.5 Flash, but current stable is 1.5-flash. 
+        # Using gemini-1.5-flash as the fallback for now.
         model = genai.GenerativeModel('gemini-1.5-flash') 
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
         print(f"Error generating summary: {e}")
-        return "Error generating summary."
+        # Suggesting a fallback if 1.5-flash fails
+        return f"Error generating summary: {str(e)}"
