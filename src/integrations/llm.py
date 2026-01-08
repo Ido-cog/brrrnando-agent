@@ -10,7 +10,7 @@ def _get_model():
     if not api_key:
         raise ValueError("GEMINI_API_KEY not found")
     genai.configure(api_key=api_key)
-    return genai.GenerativeModel('gemini-2.0-flash-exp') # Updated to a more recent model if available, or stay consistent
+    return genai.GenerativeModel('gemini-1.5-flash')
 
 def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any]) -> str:
     """
