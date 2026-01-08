@@ -112,13 +112,13 @@ def main():
             context_data["videos"] = videos
             
         if phase in [Phase.ACTIVE, Phase.HYPE_DAILY, Phase.PLANNING_WEEKLY]:
-            # Search for Piste Map
-            piste_map = search_web(f"{trip.resort_name} official piste map PDF link", max_results=1)
+            # Search for Piste Map - Use 'official site' to get better results
+            piste_map = search_web(f"{trip.resort_name} official piste map PDF link site", max_results=2)
             context_data["piste_map_info"] = piste_map
 
         if phase in [Phase.ACTIVE] or (phase == Phase.HYPE_DAILY and args.mode == "evening"):
-            # Search for Lift Status
-            lifts = search_web(f"{trip.resort_name} live lift status open runs percentage", max_results=2)
+            # Search for Lift Status - Focus on official resort status
+            lifts = search_web(f"{trip.resort_name} live lift status official site opening percentage", max_results=2)
             context_data["lift_status_info"] = lifts
             
         if phase in [Phase.LOGISTICS_OUT, Phase.LOGISTICS_BACK] or (phase == Phase.ACTIVE and args.mode == "morning"):
