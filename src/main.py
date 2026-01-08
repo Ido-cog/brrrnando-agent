@@ -111,6 +111,16 @@ def main():
             videos = search_videos(f"{trip.resort_name} ski vibe amazing", max_results=2)
             context_data["videos"] = videos
             
+        if phase in [Phase.ACTIVE, Phase.HYPE_DAILY, Phase.PLANNING_WEEKLY]:
+            # Search for Piste Map
+            piste_map = search_web(f"{trip.resort_name} official piste map PDF link", max_results=1)
+            context_data["piste_map_info"] = piste_map
+
+        if phase in [Phase.ACTIVE] or (phase == Phase.HYPE_DAILY and args.mode == "evening"):
+            # Search for Lift Status
+            lifts = search_web(f"{trip.resort_name} live lift status open runs percentage", max_results=2)
+            context_data["lift_status_info"] = lifts
+            
         if phase in [Phase.LOGISTICS_OUT, Phase.LOGISTICS_BACK] or (phase == Phase.ACTIVE and args.mode == "morning"):
             # Logistics check or Lift Status (Lift status is hard without specific API, use search?)
             # Spec says "Search: current road status".
@@ -133,14 +143,16 @@ def main():
         - Snow Depth at Summit and Base (in cm).
         - 7-Day Snowfall Forecast (total cm).
         - Temperature and Wind conditions.
+        - **Piste Map**: Provide a direct link to the best PDF/official map found in the context.
+        - **Lift & Run Status**: Summarize how many lifts/runs are open (e.g., "45/60 lifts open").
         
         Instructions by Phase:
         - Mode: {args.mode} (Morning = Conditions/Live, Evening = Forecast/Hype).
         - Phase: {phase.value}.
         - If Weekly/Planning: Focus on the 7-day forecast and base/summit snow accumulation.
-        - If Hype: Include a video link if available.
+        - If Hype: Include a video link and the piste map link.
         - If Logistics: Provide clear status on roads and weather.
-        - If Active: Morning = Current local conditions. Evening = Tomorrow's forecast.
+        - If Active: Morning = Current local conditions + Lift status. Evening = Tomorrow's forecast + Apre plans.
         
         Keep the message under 1000 characters and well-structured with bullet points or bold headers.
         """
