@@ -56,3 +56,11 @@ jobs:
           RECIPIENT_PHONE: ${{ secrets.RECIPIENT_PHONE }}
         run: |
           python -m src.main --mode ${{ steps.mode.outputs.mode }}
+          
+      - name: Commit State
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add state.json
+          git commit -m "Update agent state [skip ci]" || echo "No changes to commit"
+          git push

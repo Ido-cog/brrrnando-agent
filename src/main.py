@@ -12,6 +12,7 @@ from .integrations.weather import get_weather_data
 from .integrations.llm import generate_draft, review_draft
 from .integrations.whatsapp import send_whatsapp_message
 from .discovery import DiscoveryEngine
+from .state import load_state, save_state, get_resort_state, mark_url_seen, update_last_run
 
 def load_trips(path: str = "trips.json") -> List[Trip]:
     if not os.path.exists(path):
@@ -44,6 +45,7 @@ def main():
         return
 
     discovery_engine = DiscoveryEngine()
+    state = load_state()
 
     for trip in trips:
         phase = determine_phase(trip, current_date)
@@ -60,6 +62,9 @@ def main():
             if args.mode != "morning":
                  print("Skipping Weekly update (not Morning).")
                  continue
+
+        # Get resort-specific state
+        resort_state = get_resort_state(state, trip.resort_name)
 
         # Gather Weather Data
         weather_info = {}
@@ -94,8 +99,11 @@ def main():
 
         # Discovery Phase
         print(f"Running discovery for {trip.resort_name}...")
-        insights = discovery_engine.discover_insights(trip, phase)
+        insights = discovery_engine.discover_insights(trip, phase, resort_state)
         
+        if not insights and phase in [Phase.ACTIVE, Phase.HYPE_DAILY]:
+            print(f"No new insights found for {trip.resort_name}. Proceeding with weather only.")
+
         # Drafting Phase
         print(f"Drafting message for {trip.resort_name}...")
         draft = generate_draft(trip.resort_name, phase.value, weather_info, insights)
@@ -126,6 +134,15 @@ def main():
         else:
             print(f"Sending message for {trip.resort_name}...")
             send_whatsapp_message(final_message)
+
+        # Update State
+        for ins in insights:
+            mark_url_seen(resort_state, ins.url)
+        update_last_run(resort_state)
+
+    # Save state at the end
+    print("Saving state...")
+    save_state(state)
 
 if __name__ == "__main__":
     main()
