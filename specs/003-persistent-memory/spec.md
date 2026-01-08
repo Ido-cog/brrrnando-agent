@@ -12,6 +12,7 @@ The agent should remember previously shared insights (URLs) to avoid repetition 
 2. **Deduplication**: `DiscoveryEngine` must filter out any URLs already present in the "seen" list for a specific resort.
 3. **State Updates**: After a successful message is drafted (or sent), the URLs of the insights used must be added to the resort's "seen" list.
 4. **Pruning**: To prevent the file from growing indefinitely, the "seen" list should only keep the last 50 entries per resort.
+5. **Manual Run Safety**: If the agent is triggered manually (debug/test), the state should NOT be updated.
 
 ## Key Entities
 ### State Object

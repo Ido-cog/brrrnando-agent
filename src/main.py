@@ -31,6 +31,7 @@ def main():
     parser = argparse.ArgumentParser(description="Brrrnando Agent")
     parser.add_argument("--mode", choices=["morning", "evening"], required=True, help="Run mode (morning/evening)")
     parser.add_argument("--dry-run", action="store_true", help="Do not send messages, just print output")
+    parser.add_argument("--no-state", action="store_true", help="Do not update or save state (seen URLs, etc.)")
     args = parser.parse_args()
     
     tz = pytz.timezone("Asia/Jerusalem")
@@ -38,6 +39,8 @@ def main():
     current_date = now.date()
     
     print(f"Running Brrrnando in {args.mode} mode. Date: {current_date}")
+    if args.no_state:
+        print("State update is DISABLED for this run.")
     
     trips = load_trips()
     if not trips:
@@ -136,13 +139,17 @@ def main():
             send_whatsapp_message(final_message)
 
         # Update State
-        for ins in insights:
-            mark_url_seen(resort_state, ins.url)
-        update_last_run(resort_state)
+        if not args.no_state:
+            for ins in insights:
+                mark_url_seen(resort_state, ins.url)
+            update_last_run(resort_state)
 
     # Save state at the end
-    print("Saving state...")
-    save_state(state)
+    if not args.no_state:
+        print("Saving state...")
+        save_state(state)
+    else:
+        print("Skipping state save (no-state flag).")
 
 if __name__ == "__main__":
     main()

@@ -54,10 +54,12 @@ jobs:
           WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
           WHATSAPP_PHONE_ID: ${{ secrets.WHATSAPP_PHONE_ID }}
           RECIPIENT_PHONE: ${{ secrets.RECIPIENT_PHONE }}
+          NO_STATE: ${{ github.event_name == 'workflow_dispatch' && '--no-state' || '' }}
         run: |
-          python -m src.main --mode ${{ steps.mode.outputs.mode }}
+          python -m src.main --mode ${{ steps.mode.outputs.mode }} $NO_STATE
           
       - name: Commit State
+        if: github.event_name == 'schedule'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
