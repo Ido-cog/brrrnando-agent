@@ -32,9 +32,10 @@ def send_whatsapp_message(message: str, recipient_id: str = None):
     
     try:
         response = requests.post(url, headers=headers, json=data, timeout=10)
+        print(f"WhatsApp API Status: {response.status_code}")
+        if response.status_code >= 400:
+             print(f"WhatsApp API Error Body: {response.text}")
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
         print(f"Error sending WhatsApp message: {e}")
-        if response is not None:
-             print(response.text)
