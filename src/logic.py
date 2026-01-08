@@ -56,7 +56,7 @@ PHASE_SEARCH_INTENT = {
     Phase.PLANNING_WEEKLY: ["long range weather", "resort highlights", "ski season outlook"],
     Phase.HYPE_DAILY: ["current snow conditions", "recent instagram videos", "resort news"],
     Phase.LOGISTICS_OUT: ["road status to resort", "airport weather", "transfer tips"],
-    Phase.ACTIVE: ["live lift status", "local events today", "best après-ski", "piste map"],
+    Phase.ACTIVE: ["live lift status", "local events today", "resort history", "fun facts", "best hidden runs"],
     Phase.LOGISTICS_BACK: ["road status from resort", "airport weather", "return transfer"],
     Phase.TRAVEL: ["airport lounge", "flight status", "travel tips"],
     Phase.POST: ["season recap", "next trip ideas"]

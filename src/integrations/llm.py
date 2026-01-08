@@ -62,12 +62,18 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     LOCAL INSIGHTS:
     {insights_str}
     
+    If CURRENT PHASE is 'active', you MUST include a special engagement section at the end:
+    EITHER '--- 🏆 BRRRNANDO'S DAILY CHALLENGE ---' (a fun, safe physical or social task)
+    OR '--- 💡 SKI NERD TRIVIA ---' (an interesting fact about the resort geography, history, or quirks).
+    Use the LOCAL INSIGHTS and your own training data about {trip_name} to make it hyper-specific.
+    
     GUIDELINES:
     1. Be creative and hyper-enthusiastic. Use emojis (⛷️, ❄️, 🍻).
     2. Context is key: If we're there, focus on lifts and après-ski. If we're weeks out, focus on hype and long-range trends.
     3. Be specific! Mention the resort name and the insights found.
     4. Format for WhatsApp (bolding, short paragraphs).
     5. DO NOT use placeholders like [Resort Name] or "could not find info".
+    6. Ensure challenges are fun and safe.
     """
     
     response = _call_with_retry(model.generate_content, prompt)
