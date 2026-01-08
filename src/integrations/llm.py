@@ -1,5 +1,8 @@
+import time
+import re
 from typing import List, Dict, Tuple, Any
 import google.generativeai as genai
+from google.api_core import exceptions
 import os
 from dotenv import load_dotenv
 
@@ -11,6 +14,36 @@ def _get_model():
         raise ValueError("GEMINI_API_KEY not found")
     genai.configure(api_key=api_key)
     return genai.GenerativeModel('gemini-2.5-flash')
+
+def _call_with_retry(model_method, *args, **kwargs):
+    """
+    Helper to call Gemini with a single retry if rate limited (429) 
+    and the delay is <= 2 minutes.
+    """
+    try:
+        return model_method(*args, **kwargs)
+    except exceptions.ResourceExhausted as e:
+        message = str(e)
+        # Extract delay from "Please retry in 53.527820394s." or similar
+        match = re.search(r"retry in (\d+\.?\d*)s", message)
+        
+        delay = 65 # Default to slightly over 1 minute if not found
+        if match:
+            delay = float(match.group(1))
+        
+        if delay <= 120:
+            print(f"Rate limited (429). Waiting {delay:.1f} seconds to retry...")
+            time.sleep(delay + 2) # Buffer
+            try:
+                return model_method(*args, **kwargs)
+            except Exception as e2:
+                # If it fails again, we return the error string as before to 'proceed'
+                return type('obj', (object,), {'text': f"Error after retry: {str(e2)}"})
+        else:
+            print(f"Rate limit delay too long ({delay:.1f}s). Proceeding without retry.")
+            return type('obj', (object,), {'text': f"Rate limit exceeded (delay {delay:.1f}s)."})
+    except Exception as e:
+        return type('obj', (object,), {'text': f"Error: {str(e)}"})
 
 def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any]) -> str:
     """
@@ -37,11 +70,8 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     5. DO NOT use placeholders like [Resort Name] or "could not find info".
     """
     
-    try:
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"Error drafting message: {str(e)}"
+    response = _call_with_retry(model.generate_content, prompt)
+    return response.text
 
 def review_draft(draft: str, trip_name: str, phase_name: str) -> Tuple[bool, str]:
     """
@@ -67,29 +97,22 @@ def review_draft(draft: str, trip_name: str, phase_name: str) -> Tuple[bool, str
     If it needs fixes, respond with 'REVISE' followed by specific instructions for the drafter.
     """
     
-    try:
-        response = model.generate_content(prompt)
-        result = response.text.strip()
-        
-        if result.startswith("APPROVED"):
-            # Extract the message part
-            lines = result.split("\n")
-            if len(lines) > 1:
-                return True, "\n".join(lines[1:]).strip()
-            return True, draft # Fallback to original draft if no separate line
-        
-        return False, result
-    except Exception as e:
-        return False, f"Error reviewing draft: {str(e)}"
+    response = _call_with_retry(model.generate_content, prompt)
+    result = response.text.strip()
+    
+    if result.startswith("APPROVED"):
+        # Extract the message part
+        lines = result.split("\n")
+        if len(lines) > 1:
+            return True, "\n".join(lines[1:]).strip()
+        return True, draft # Fallback to original draft if no separate line
+    
+    return False, result
 
-# Keeping the old function for backward compatibility if needed, but pointing to generate_draft logic
 def generate_summary(prompt: str) -> str:
     """
     Legacy summary function.
     """
-    try:
-        model = _get_model()
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"Error: {str(e)}"
+    model = _get_model()
+    response = _call_with_retry(model.generate_content, prompt)
+    return response.text
