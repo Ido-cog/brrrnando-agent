@@ -78,10 +78,33 @@ def main():
         }
         
         # Gather Data
-        if phase in [Phase.ACTIVE, Phase.HYPE_DAILY, Phase.LOGISTICS_OUT, Phase.LOGISTICS_BACK, Phase.TRAVEL]:
-            # Weather is relevant for most
-            weather = get_weather_data(trip.lat, trip.lon)
-            context_data["weather"] = weather
+        if phase in [Phase.ACTIVE, Phase.HYPE_DAILY, Phase.LOGISTICS_OUT, Phase.LOGISTICS_BACK, Phase.TRAVEL, Phase.PLANNING_WEEKLY]:
+            # Weather is relevant
+            if trip.summit_elevation and trip.base_elevation:
+                weather_summit = get_weather_data(trip.lat, trip.lon, trip.summit_elevation)
+                weather_base = get_weather_data(trip.lat, trip.lon, trip.base_elevation)
+                
+                # Combine or structure for LLM
+                snow_depth_summit = weather_summit.get("current", {}).get("snow_depth", 0)
+                snow_depth_base = weather_base.get("current", {}).get("snow_depth", 0)
+                
+                # Snowfall forecast (7 days) - assume summit forecast represents the area
+                snowfall_list = weather_summit.get("daily", {}).get("snowfall_sum", [])
+                total_weekly_snow = sum(snowfall_list) if snowfall_list else 0
+                
+                context_data["weather"] = {
+                    "summit": weather_summit,
+                    "base": weather_base,
+                    "snow_depth_summit": snow_depth_summit,
+                    "snow_depth_base": snow_depth_base,
+                    "weekly_snowfall_forecast": total_weekly_snow
+                }
+            else:
+                weather = get_weather_data(trip.lat, trip.lon)
+                snowfall_list = weather.get("daily", {}).get("snowfall_sum", [])
+                total_weekly_snow = sum(snowfall_list) if snowfall_list else 0
+                context_data["weather"] = weather
+                context_data["weather"]["weekly_snowfall_forecast"] = total_weekly_snow
             
         if phase in [Phase.HYPE_DAILY] and args.mode == "evening":
             # Search for videos
@@ -97,20 +120,29 @@ def main():
                 
         # Construct Prompt
         prompt = f"""
-        You are Brrrnando, a high-energy ski trip agent.
-        Write a short, punchy WhatsApp message (use emojis, bold text) for the following context.
+        You are Brrrnando, a specialized ski trip agent. 
+        Your tone is informative, expert, and balanced. Avoid excessive "hype" or "ridiculous" excitement.
+        Focus on providing value and clear data to the traveler.
+
+        Write a concise WhatsApp message (use bold text for key stats) for the following context.
         
         Context:
         {json.dumps(context_data, default=str, indent=2)}
         
-        Instructions:
-        - Mode: {args.mode} (Morning = Live/Brief, Evening = Hype/Forecast).
+        Mandatory content to include if available:
+        - Snow Depth at Summit and Base (in cm).
+        - 7-Day Snowfall Forecast (total cm).
+        - Temperature and Wind conditions.
+        
+        Instructions by Phase:
+        - Mode: {args.mode} (Morning = Conditions/Live, Evening = Forecast/Hype).
         - Phase: {phase.value}.
-        - If Weekly/Planning: Build hype, mention snow stats.
-        - If Hype: Show a video link if available.
-        - If Logistics: CRITICAL info on roads/weather.
-        - If Active: Morning = Powder alert/Wind chill? Evening = Apre plans/Tomorrow forecast.
-        - Keep it under 1000 characters.
+        - If Weekly/Planning: Focus on the 7-day forecast and base/summit snow accumulation.
+        - If Hype: Include a video link if available.
+        - If Logistics: Provide clear status on roads and weather.
+        - If Active: Morning = Current local conditions. Evening = Tomorrow's forecast.
+        
+        Keep the message under 1000 characters and well-structured with bullet points or bold headers.
         """
         
         if args.dry_run:

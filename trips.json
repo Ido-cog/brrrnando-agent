@@ -7,7 +7,9 @@
     "flight_back_date": "2026-01-27",
     "lat": 46.5386,
     "lon": 10.1357,
-    "road_check": "Milan to Livigno"
+    "road_check": "Milan to Livigno",
+    "summit_elevation": 2792,
+    "base_elevation": 1816
   },
   {
     "resort_name": "Les Arcs",
@@ -17,6 +19,8 @@
     "flight_back_date": "2026-03-14",
     "lat": 45.5717,
     "lon": 6.8078,
-    "road_check": "Lyon to Les Arcs"
+    "road_check": "Lyon to Les Arcs",
+    "summit_elevation": 3226,
+    "base_elevation": 1600
   }
 ]

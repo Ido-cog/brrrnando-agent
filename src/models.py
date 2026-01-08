@@ -11,3 +11,5 @@ class Trip(BaseModel):
     lat: float
     lon: float
     road_check: str
+    summit_elevation: Optional[int] = None
+    base_elevation: Optional[int] = None
