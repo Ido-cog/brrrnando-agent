@@ -45,13 +45,22 @@ def _call_with_retry(model_method, *args, **kwargs):
     except Exception as e:
         return type('obj', (object,), {'text': f"Error: {str(e)}"})
 
-def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any]) -> str:
+def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any], 
+                   seen_trivia: List[str] = None, seen_challenges: List[str] = None) -> str:
     """
     Drafts a high-energy WhatsApp message based on context.
     """
     model = _get_model()
     
     insights_str = "\n".join([f"- {i.title}: {i.content} ({i.url})" for i in insights])
+    
+    seen_trivia_str = ""
+    if seen_trivia and len(seen_trivia) > 0:
+        seen_trivia_str = "\n\nPREVIOUSLY SHARED TRIVIA (DO NOT REPEAT):\n" + "\n".join([f"- {t}" for t in seen_trivia[-10:]])
+    
+    seen_challenges_str = ""
+    if seen_challenges and len(seen_challenges) > 0:
+        seen_challenges_str = "\n\nPREVIOUSLY SHARED CHALLENGES (DO NOT REPEAT):\n" + "\n".join([f"- {c}" for c in seen_challenges[-10:]])
     
     prompt = f"""
     You are Brrrnando, a hyper-enthusiastic ski trip assistant.
@@ -61,11 +70,14 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     WEATHER DATA: {weather_data}
     LOCAL INSIGHTS:
     {insights_str}
+    {seen_trivia_str}
+    {seen_challenges_str}
     
     If CURRENT PHASE is 'active', you MUST include a special engagement section at the end:
     EITHER '--- 🏆 BRRRNANDO'S DAILY CHALLENGE ---' (a fun, safe physical or social task)
     OR '--- 💡 SKI NERD TRIVIA ---' (an interesting fact about the resort geography, history, or quirks).
     Use the LOCAL INSIGHTS and your own training data about {trip_name} to make it hyper-specific.
+    IMPORTANT: Do NOT repeat any trivia or challenges from the "PREVIOUSLY SHARED" lists above.
     
     GUIDELINES:
     1. Be creative and hyper-enthusiastic. Use emojis (⛷️, ❄️, 🍻).

@@ -12,7 +12,10 @@ from .integrations.weather import get_weather_data
 from .integrations.llm import generate_draft, review_draft
 from .integrations.whatsapp import send_whatsapp_message
 from .discovery import DiscoveryEngine
-from .state import load_state, save_state, get_resort_state, mark_url_seen, update_last_run
+from .state import (load_state, save_state, get_resort_state, mark_url_seen, 
+                    update_last_run, get_seen_trivia, get_seen_challenges,
+                    mark_trivia_seen, mark_challenge_seen)
+from .extraction import extract_trivia, extract_challenge
 
 def load_trips(path: str = "trips.json") -> List[Trip]:
     if not os.path.exists(path):
@@ -109,7 +112,10 @@ def main():
 
         # Drafting Phase
         print(f"Drafting message for {trip.resort_name}...")
-        draft = generate_draft(trip.resort_name, phase.value, weather_info, insights)
+        seen_trivia = get_seen_trivia(resort_state)
+        seen_challenges = get_seen_challenges(resort_state)
+        draft = generate_draft(trip.resort_name, phase.value, weather_info, insights, 
+                              seen_trivia, seen_challenges)
         
         if args.dry_run:
             print("\n--- INITIAL DRAFT ---")
@@ -128,7 +134,8 @@ def main():
                 break
             else:
                 print(f"Draft needs revision: {result}")
-                final_message = generate_draft(trip.resort_name, phase.value, weather_info, insights)
+                final_message = generate_draft(trip.resort_name, phase.value, weather_info, insights,
+                                              seen_trivia, seen_challenges)
 
         if args.dry_run:
             print(f"\n--- FINAL MESSAGE ({trip.resort_name}) ---")
@@ -142,6 +149,18 @@ def main():
         if not args.no_state:
             for ins in insights:
                 mark_url_seen(resort_state, ins.url)
+            
+            # Extract and save trivia/challenge if present
+            trivia = extract_trivia(final_message)
+            if trivia:
+                print(f"Extracted trivia: {trivia[:50]}...")
+                mark_trivia_seen(resort_state, trivia)
+            
+            challenge = extract_challenge(final_message)
+            if challenge:
+                print(f"Extracted challenge: {challenge[:50]}...")
+                mark_challenge_seen(resort_state, challenge)
+            
             update_last_run(resort_state)
 
     # Save state at the end

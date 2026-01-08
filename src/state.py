@@ -31,8 +31,15 @@ def get_resort_state(state: Dict, resort_name: str) -> Dict:
     if key not in state:
         state[key] = {
             "seen_urls": [],
+            "seen_trivia": [],
+            "seen_challenges": [],
             "last_run": None
         }
+    # Ensure all keys exist for backwards compatibility
+    if "seen_trivia" not in state[key]:
+        state[key]["seen_trivia"] = []
+    if "seen_challenges" not in state[key]:
+        state[key]["seen_challenges"] = []
     return state[key]
 
 def is_url_seen(resort_state: Dict, url: str) -> bool:
@@ -50,3 +57,25 @@ def mark_url_seen(resort_state: Dict, url: str):
 def update_last_run(resort_state: Dict):
     """Update the last run timestamp to now."""
     resort_state["last_run"] = datetime.now().isoformat()
+
+def mark_trivia_seen(resort_state: Dict, trivia_text: str):
+    """Mark a trivia fact as seen and trim the list if needed."""
+    seen = resort_state.get("seen_trivia", [])
+    if trivia_text and trivia_text not in seen:
+        seen.append(trivia_text)
+        resort_state["seen_trivia"] = seen[-MAX_SEEN_URLS:]
+
+def mark_challenge_seen(resort_state: Dict, challenge_text: str):
+    """Mark a challenge as seen and trim the list if needed."""
+    seen = resort_state.get("seen_challenges", [])
+    if challenge_text and challenge_text not in seen:
+        seen.append(challenge_text)
+        resort_state["seen_challenges"] = seen[-MAX_SEEN_URLS:]
+
+def get_seen_trivia(resort_state: Dict) -> List[str]:
+    """Get list of previously seen trivia."""
+    return resort_state.get("seen_trivia", [])
+
+def get_seen_challenges(resort_state: Dict) -> List[str]:
+    """Get list of previously seen challenges."""
+    return resort_state.get("seen_challenges", [])
