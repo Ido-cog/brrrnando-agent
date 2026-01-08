@@ -16,7 +16,8 @@ def generate_summary(prompt: str) -> str:
     genai.configure(api_key=api_key)
     
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash') 
+        # Using gemini-2.5-flash as found in the user's compatible models list.
+        model = genai.GenerativeModel('gemini-2.5-flash') 
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
