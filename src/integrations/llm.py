@@ -16,12 +16,17 @@ def generate_summary(prompt: str) -> str:
     genai.configure(api_key=api_key)
     
     try:
-        # User requested 2.5 Flash, but current stable is 1.5-flash. 
-        # Using gemini-1.5-flash as the fallback for now.
         model = genai.GenerativeModel('gemini-1.5-flash') 
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
         print(f"Error generating summary: {e}")
-        # Suggesting a fallback if 1.5-flash fails
-        return f"Error generating summary: {str(e)}"
+        # Debug: List available models if initialization fails
+        try:
+            print("Listing available models for debugging...")
+            models = [m.name for m in genai.list_models()]
+            print(f"Compatible models: {models}")
+        except Exception as list_err:
+            print(f"Could not list models: {list_err}")
+            
+        return f"Error: {str(e)}"

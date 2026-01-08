@@ -10,7 +10,7 @@ def get_weather_data(lat: float, lon: float) -> Dict[str, Any]:
         "latitude": lat,
         "longitude": lon,
         "current": "temperature_2m,wind_speed_10m,snowfall",
-        "daily": "snowfall_sum,wind_speed_10m_max,freezing_level_height_max",
+        "daily": "snowfall_sum,wind_speed_10m_max",
         "timezone": "auto",
         "forecast_days": 3
     }
