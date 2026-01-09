@@ -83,21 +83,21 @@ def main():
                     snow_depth_summit = weather_summit.get("current", {}).get("snow_depth", 0)
                     snow_depth_base = weather_base.get("current", {}).get("snow_depth", 0)
                     snowfall_list = weather_summit.get("daily", {}).get("snowfall_sum", [])
-                    total_weekly_snow = sum(snowfall_list) if snowfall_list else 0
+                    total_weekly_snow_cm = round(sum(snowfall_list), 1) if snowfall_list else 0
                     
                     weather_info = {
                         "summit_snow_depth": snow_depth_summit,
                         "base_snow_depth": snow_depth_base,
-                        "weekly_snowfall_forecast": total_weekly_snow,
+                        "weekly_snowfall_forecast_cm": total_weekly_snow_cm,
                         "temp_summit": weather_summit.get("current", {}).get("temperature_2m"),
                         "wind_summit": weather_summit.get("current", {}).get("wind_speed_10m")
                     }
                 else:
                     weather = get_weather_data(trip.lat, trip.lon)
                     snowfall_list = weather.get("daily", {}).get("snowfall_sum", [])
-                    total_weekly_snow = sum(snowfall_list) if snowfall_list else 0
+                    total_weekly_snow_cm = round(sum(snowfall_list), 1) if snowfall_list else 0
                     weather_info = {
-                        "weekly_snowfall_forecast": total_weekly_snow,
+                        "weekly_snowfall_forecast_cm": total_weekly_snow_cm,
                         "current": weather.get("current")
                     }
             except Exception as e:
