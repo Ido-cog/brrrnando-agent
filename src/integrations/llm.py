@@ -63,7 +63,7 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
         seen_challenges_str = "\n\nPREVIOUSLY SHARED CHALLENGES (DO NOT REPEAT):\n" + "\n".join([f"- {c}" for c in seen_challenges[-10:]])
     
     prompt = f"""
-    You are Brrrnando, a thrilling and intense mountain expert.
+    You are Brrrnando, a thrilling and high-energy ski trip assistant.
     Your job is to draft an atmospheric and data-dense WhatsApp message for the group '{trip_name}'.
     
     CURRENT PHASE: {phase_name}
@@ -80,10 +80,10 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     IMPORTANT: Do NOT repeat any trivia or challenges from the "PREVIOUSLY SHARED" lists above.
     
     GUIDELINES:
-    1. Tone: Atmospheric, intense, and expert. Think "professional mountain guide" rather than "cheerleader".
+    1. Tone: "Balanced Hype". Professional, grounded in data, but energetic and fun. Avoid being overly serious or "monotone".
     2. Data Density: You MUST include specific numbers (e.g., Summit/Base snow depth, temperates).
     3. Venue & Insights: You MUST mention at least one specific restaurant, bar, or local venue by name from 'LOCAL INSIGHTS' if available.
-    4. Sourcing: try to include at least one link/URL from 'LOCAL INSIGHTS' if available. Must if trip is 'active'. Must if trip is 'active'.
+    4. Sourcing: aim to include at least one link/URL from 'LOCAL INSIGHTS' if available. Must if trip is 'active'.
     5. Anti-Filler: BAN generic paragraphs that contain no data (e.g., "The excitement is building..."). Every sentence must either deliver data or a specific local fact.
     6. Banned Words: NEVER use "Legends", "Magic", "Wooohooo", "CHOO CHOO", "EPIC", "Woooooow".
     7. Format: Use WhatsApp formatting (bolding, short paragraphs). Keep it punchy.
@@ -129,6 +129,50 @@ def review_draft(draft: str, trip_name: str, phase_name: str) -> Tuple[bool, str
         return True, draft # Fallback to original draft if no separate line
     
     return False, result
+
+def evaluate_discovery(trip_name: str, insights: List[Any]) -> List[str]:
+    """
+    Evaluates the current insights and returns a list of specific follow-up queries
+    if more information is needed (e.g., webcams, specific menus).
+    """
+    model = _get_model()
+    insights_summary = "\n".join([f"- {i.title}: {i.content[:200]}" for i in insights])
+    
+    prompt = f"""
+    You are Brrrnando's Discovery Brain. Analyze the current findings for the ski resort '{trip_name}'.
+    
+    CURRENT INSIGHTS:
+    {insights_summary}
+    
+    TASK:
+    Determine if we have enough "flavor" for a feature-packed report. We ideally want:
+    1. At least one webcam link or recent visual update.
+    2. Specific restaurant or après-ski venue details.
+    3. Distinct local news or events (like Olympic updates).
+    
+    If we are missing these, provide 2-3 hyper-specific search queries to find them.
+    If we have enough, respond with 'ENOUGH'.
+    
+    Format your response as a JSON list of strings if you need more, or just the word 'ENOUGH'.
+    Example: ["Livigno Bivio Club menu", "Livigno mottolino webcam live"]
+    """
+    
+    response = _call_with_retry(model.generate_content, prompt)
+    text = response.text.strip()
+    
+    if "ENOUGH" in text.upper():
+        return []
+    
+    # Try to extract JSON list
+    try:
+        import json
+        match = re.search(r"(\[.*\])", text, re.DOTALL)
+        if match:
+            return json.loads(match.group(1))
+    except:
+        pass
+    
+    return []
 
 def generate_summary(prompt: str) -> str:
     """

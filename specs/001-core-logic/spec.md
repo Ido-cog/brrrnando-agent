@@ -31,10 +31,12 @@
 
 ### Data Gathering
 - [ ] **Weather**: Successfully fetches Snowfall, Freezing Level, and Windsuped from Open-Meteo API.
-- [ ] **Search**: Successfully retrieves search results for "Road status" and "Snow report video" using DuckDuckGo (primary) or Tavily (fallback on rate limit).
+- [ ] **Data Gathering**: Fetches real-time weather (temp, wind, snowfall, snow depth) for resort coordinates.
+- [ ] **Autonomous Discovery**: Performs an initial web/video search and autonomously evaluates if more specific searches (webcams, venue details) are needed.
+- [ ] **Search**: DuckDuckGo search with Tavily fallback for robustness.
 
 ### Synthesis & Output
-- [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "thrilling but grounded" natural language summary.
+- [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "balanced hype" natural language summary (thrilling and fun, yet grounded in data).
 - [ ] **Multi-Channel Integration**: Successfully sends the generated message to both the configured WhatsApp number/Group and the Telegram Bot/Channel.
 
 ### Config & Deployment

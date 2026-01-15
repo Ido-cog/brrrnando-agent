@@ -9,7 +9,7 @@ from typing import List
 from .models import Trip
 from .logic import determine_phase, Phase
 from .integrations.weather import get_weather_data
-from .integrations.llm import generate_draft, review_draft
+from .integrations.llm import generate_draft, review_draft, evaluate_discovery
 from .integrations.whatsapp import send_whatsapp_message
 from .integrations.telegram import send_telegram_message
 from .discovery import DiscoveryEngine
@@ -110,6 +110,23 @@ def main():
         # Discovery Phase
         print(f"Running discovery for {trip.resort_name}...")
         insights = discovery_engine.discover_insights(trip, phase, resort_state)
+        
+        # Iterative Search (Autonomous Discovery)
+        if phase in [Phase.HYPE_DAILY, Phase.ACTIVE]:
+            print(f"Evaluating discovery results for {trip.resort_name}...")
+            refined_queries = evaluate_discovery(trip.resort_name, insights)
+            if refined_queries:
+                print(f"Autonomous Discovery: LLM requested {len(refined_queries)} follow-up queries.")
+                refined_insights = discovery_engine.perform_refined_search(refined_queries, resort_state)
+                insights.extend(refined_insights)
+                # Deduplicate again just in case
+                seen_urls = set()
+                final_insights = []
+                for ins in insights:
+                    if ins.url not in seen_urls:
+                        final_insights.append(ins)
+                        seen_urls.add(ins.url)
+                insights = final_insights[:7] # Increase limit to 7 for feature-packed message
         
         if not insights and phase in [Phase.ACTIVE, Phase.HYPE_DAILY]:
             print(f"No new insights found for {trip.resort_name}. Proceeding with weather only.")

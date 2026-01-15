@@ -71,3 +71,39 @@ class DiscoveryEngine:
                 seen_urls.add(insight.url)
         
         return unique_insights[:5] # Limit to top 5 insights for the prompt
+    def perform_refined_search(self, queries: List[str], resort_state: Dict = None) -> List[Insight]:
+        """
+        Performs specific searches based on refined queries.
+        """
+        refined_insights = []
+        for query in queries:
+            print(f"Refining discovery with query: {query}")
+            # Try to find text results for specific queries
+            text_results = search_web(query, max_results=2)
+            for res in text_results:
+                url = res["href"]
+                if resort_state and is_url_seen(resort_state, url):
+                    continue
+                
+                refined_insights.append(Insight(
+                    title=res["title"],
+                    content=res["body"],
+                    type="text",
+                    url=url
+                ))
+            
+            # Special check for webcams in refined queries
+            if "webcam" in query.lower():
+                video_results = search_videos(query, max_results=1)
+                for res in video_results:
+                    url = res["content"]
+                    if resort_state and is_url_seen(resort_state, url):
+                        continue
+                    refined_insights.append(Insight(
+                        title=f"Webcam/Live Update: {res['title']}",
+                        content=res["description"],
+                        type="video",
+                        url=url
+                    ))
+        
+        return refined_insights
