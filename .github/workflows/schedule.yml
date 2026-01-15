@@ -8,8 +8,17 @@ on:
     - cron: '0 17 * * *'
   workflow_dispatch:
     inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'run'
+        type: choice
+        options:
+        - run
+        - ping
+        - reset-memory
       mode:
-        description: 'Mode (morning/evening)'
+        description: 'Mode (morning/evening) - only used for action=run'
         required: true
         default: 'morning'
         type: choice
@@ -50,15 +59,22 @@ jobs:
             echo "mode=${{ inputs.mode }}" >> $GITHUB_OUTPUT
           fi
           
-      - name: Run Agent
+      - name: Run Action
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
           WHATSAPP_PHONE_ID: ${{ secrets.WHATSAPP_PHONE_ID }}
           RECIPIENT_PHONE: ${{ secrets.RECIPIENT_PHONE }}
-          NO_STATE: ${{ github.event_name == 'workflow_dispatch' && '--no-state' || '' }}
+          PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m src.main --mode ${{ steps.mode.outputs.mode }} $NO_STATE
+          ACTION="${{ inputs.action || 'run' }}"
+          if [ "$ACTION" == "run" ]; then
+            python -m src.main --mode ${{ steps.mode.outputs.mode }}
+          elif [ "$ACTION" == "ping" ]; then
+            python scripts/ping_whatsapp.py
+          elif [ "$ACTION" == "reset-memory" ]; then
+            python scripts/reset_memory.py
+          fi
           
       - name: Commit State
         if: github.event_name == 'schedule'
