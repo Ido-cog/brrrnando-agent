@@ -11,9 +11,10 @@ def _tavily_search(query: str, max_results: int = 3, search_depth: str = "basic"
     """
     api_key = os.getenv("TAVILY_API_KEY")
     if not api_key:
-        print("Tavily API key not found. Skipping fallback.")
+        print("⚠️ Tavily API key not found. Skipping fallback.")
         return []
 
+    print(f"🔄 DDG failed. Calling Tavily fallback for: {query}...")
     try:
         from tavily import TavilyClient
         tavily = TavilyClient(api_key=api_key)
@@ -26,9 +27,10 @@ def _tavily_search(query: str, max_results: int = 3, search_depth: str = "basic"
                 "href": r.get("url", ""),
                 "body": r.get("content", "")
             })
+        print(f"✅ Tavily search successful. Found {len(results)} results.")
         return results
     except Exception as e:
-        print(f"Error searching Tavily: {e}")
+        print(f"❌ Error searching Tavily: {e}")
         return []
 
 def search_web(query: str, max_results: int = 3) -> List[Dict[str, str]]:
