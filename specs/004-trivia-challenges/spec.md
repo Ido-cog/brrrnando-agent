@@ -17,7 +17,7 @@ Transform Brrrnando into a "Game Master" during the `ACTIVE` skiing phase. The a
 ## Acceptance Criteria
 - [ ] The morning briefing during `ACTIVE` phase includes a "Brrrnando's Daily Challenge" or "Ski Nerd Trivia" section.
 - [ ] Content is specific to the resort (e.g., mentions the "Caron" lift in Val Thorens).
-- [ ] Tone remains hyper-enthusiastic and encouraging.
+- [ ] Tone remains intense, expert-led, and thrilling.
 - [ ] Does not disrupt the essential weather/logistics info.
 
 ## Success Metrics

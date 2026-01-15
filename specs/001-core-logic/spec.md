@@ -34,7 +34,7 @@
 - [ ] **Search**: Successfully retrieves search results for "Road status" and "Snow report video" using DuckDuckGo (primary) or Tavily (fallback on rate limit).
 
 ### Synthesis & Output
-- [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "high-energy" natural language summary.
+- [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "thrilling but grounded" natural language summary.
 - [ ] **WhatsApp Integration**: Successfully sends the generated message to the configured WhatsApp number/Group (via API).
 
 ### Config & Deployment
