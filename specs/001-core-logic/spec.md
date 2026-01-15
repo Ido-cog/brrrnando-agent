@@ -20,8 +20,8 @@
 4. **Configurable Trips**
    As the admin, I want to define trips in a `trips.json` file with flight dates, ski dates, resort names, and specific queries, so I can manage multiple trips easily.
 
-5. **WhatsApp Delivery**
-   As a user, I want to receive these agents in my WhatsApp group, formatted with emojis and bold text for quick scanning.
+5. **Multi-Channel Delivery (WhatsApp & Telegram)**
+   As a user, I want to receive these reports in my WhatsApp group, but also have a Telegram channel fallback to ensure I never miss an update due to WhatsApp's 24-hour window restrictions.
 
 ## Acceptance Criteria
 
@@ -35,7 +35,7 @@
 
 ### Synthesis & Output
 - [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "thrilling but grounded" natural language summary.
-- [ ] **WhatsApp Integration**: Successfully sends the generated message to the configured WhatsApp number/Group (via API).
+- [ ] **Multi-Channel Integration**: Successfully sends the generated message to both the configured WhatsApp number/Group and the Telegram Bot/Channel.
 
 ### Config & Deployment
 - [ ] **Config Schema**: `trips.json` supports `flight_out_date`, `ski_start_date`, `ski_end_date`, `flight_back_date`.
