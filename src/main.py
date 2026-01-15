@@ -95,11 +95,14 @@ def main():
                     }
                 else:
                     weather = get_weather_data(trip.lat, trip.lon)
+                    current = weather.get("current", {})
                     snowfall_list = weather.get("daily", {}).get("snowfall_sum", [])
                     total_weekly_snow_cm = round(sum(snowfall_list), 1) if snowfall_list else 0
                     weather_info = {
-                        "weekly_snowfall_forecast_cm": total_weekly_snow_cm,
-                        "current": weather.get("current")
+                        "snow_depth": current.get("snow_depth", 0),
+                        "temp_current": current.get("temperature_2m"),
+                        "wind_current": current.get("wind_speed_10m"),
+                        "weekly_snowfall_forecast_cm": total_weekly_snow_cm
                     }
             except Exception as e:
                 print(f"Error gathering weather: {e}")
