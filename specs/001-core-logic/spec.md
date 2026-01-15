@@ -31,7 +31,7 @@
 
 ### Data Gathering
 - [ ] **Weather**: Successfully fetches Snowfall, Freezing Level, and Windsuped from Open-Meteo API.
-- [ ] **Search**: Successfully retrieves search results for "Road status" and "Snow report video" using Brave/DDG.
+- [ ] **Search**: Successfully retrieves search results for "Road status" and "Snow report video" using DuckDuckGo (primary) or Tavily (fallback on rate limit).
 
 ### Synthesis & Output
 - [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "high-energy" natural language summary.
