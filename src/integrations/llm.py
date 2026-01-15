@@ -83,7 +83,7 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     1. Tone: Atmospheric, intense, and expert. Think "professional mountain guide" rather than "cheerleader".
     2. Data Density: You MUST include specific numbers (e.g., Summit/Base snow depth, temperates).
     3. Venue & Insights: You MUST mention at least one specific restaurant, bar, or local venue by name from 'LOCAL INSIGHTS' if available.
-    4. Sourcing: You MUST include at least one link/URL from 'LOCAL INSIGHTS' if available.
+    4. Sourcing: try to include at least one link/URL from 'LOCAL INSIGHTS' if available. Must if trip is 'active'. Must if trip is 'active'.
     5. Anti-Filler: BAN generic paragraphs that contain no data (e.g., "The excitement is building..."). Every sentence must either deliver data or a specific local fact.
     6. Banned Words: NEVER use "Legends", "Magic", "Wooohooo", "CHOO CHOO", "EPIC", "Woooooow".
     7. Format: Use WhatsApp formatting (bolding, short paragraphs). Keep it punchy.
