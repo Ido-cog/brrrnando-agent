@@ -66,6 +66,8 @@ jobs:
           WHATSAPP_PHONE_ID: ${{ secrets.WHATSAPP_PHONE_ID }}
           RECIPIENT_PHONE: ${{ secrets.RECIPIENT_PHONE }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           PYTHONPATH: ${{ github.workspace }}
         run: |
           ACTION="${{ inputs.action || 'run' }}"

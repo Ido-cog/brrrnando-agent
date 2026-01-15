@@ -11,6 +11,7 @@ from .logic import determine_phase, Phase
 from .integrations.weather import get_weather_data
 from .integrations.llm import generate_draft, review_draft
 from .integrations.whatsapp import send_whatsapp_message
+from .integrations.telegram import send_telegram_message
 from .discovery import DiscoveryEngine
 from .state import (load_state, save_state, get_resort_state, mark_url_seen, 
                     update_last_run, get_seen_trivia, get_seen_challenges,
@@ -144,6 +145,7 @@ def main():
         else:
             print(f"Sending message for {trip.resort_name}...")
             send_whatsapp_message(final_message)
+            send_telegram_message(final_message)
 
         # Update State
         if not args.no_state:
