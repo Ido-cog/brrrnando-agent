@@ -107,6 +107,7 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     7. Format: Use WhatsApp formatting (bolding, short paragraphs). Keep it punchy.
     8. DO NOT use placeholders.
     9. Ensure challenges/trivia are hyper-specific to {trip_name}.
+    10. Link Formatting: When including URLs, use descriptive text, NOT the URL itself. Format as [descriptive text](URL), NEVER as [URL](URL). Example: 'Check pass status' not 'https://example.com'.
     """
     
     response = _call_with_retry(model.generate_content, prompt)
