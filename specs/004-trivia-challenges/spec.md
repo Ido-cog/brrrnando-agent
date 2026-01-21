@@ -9,16 +9,16 @@ Transform Brrrnando into a "Game Master" during the `ACTIVE` skiing phase. The a
 - **Competitive Spirit (P3)**: As a competitive skier, I want challenges that can be "won" to brag to my friends.
 
 ## Functional Requirements
-1. **Contextual Generation**: Trivia and challenges must be relevant to the specific resort and the current phase (`ACTIVE`).
-2. **LLM Integration**: Use Gemini to generate creative trivia/challenges based on resort knowledge or discovered insights.
-3. **Daily Frequency**: One challenge or trivia nugget per day, integrated into the morning briefing during the `ACTIVE` phase.
-4. **Variety**: The agent should alternate between types of engagement (Trivia vs. Challenge) to keep it fresh.
+1. **Contextual Generation**: Trivia and challenges are relevant to the resort and generated during the `ACTIVE` phase.
+2. **LLM Integration**: Gemini generates one "Engagement Section" per day, alternating between '--- 🏆 BRRRNANDO'S DAILY CHALLENGE ---' and '--- 💡 SKI NERD TRIVIA ---'.
+3. **Extraction & Persistence**: System uses regex markers (`extract_trivia`, `extract_challenge`) to pull the generated content from the finalized message and save it to `state.json`.
+4. **Deduplication**: LLM is provided with the last 10 seen trivia/challenges to avoid repetition.
 
 ## Acceptance Criteria
-- [ ] The morning briefing during `ACTIVE` phase includes a "Brrrnando's Daily Challenge" or "Ski Nerd Trivia" section.
-- [ ] Content is specific to the resort (e.g., mentions the "Caron" lift in Val Thorens).
-- [ ] Tone remains intense, expert-led, and thrilling.
-- [ ] Does not disrupt the essential weather/logistics info.
+- [x] Morning briefing during `ACTIVE` phase includes a specialized engagement section.
+- [x] Content is specific to the resort.
+- [x] Extraction logic correctly identifies and saves trivia/challenges.
+- [x] Persistence layer prevents repetition within a 50-item window.
 
 ## Success Metrics
 - Increase in group chatter/replies to the agent's messages (manual observation).

@@ -15,7 +15,8 @@ from .integrations.telegram import send_telegram_message
 from .discovery import DiscoveryEngine
 from .state import (load_state, save_state, get_resort_state, mark_url_seen, 
                     update_last_run, get_seen_trivia, get_seen_challenges,
-                    mark_trivia_seen, mark_challenge_seen)
+                    mark_trivia_seen, mark_challenge_seen, get_recent_messages,
+                    store_message)
 from .extraction import extract_trivia, extract_challenge
 
 def load_trips(path: str = "trips.json") -> List[Trip]:
@@ -131,12 +132,17 @@ def main():
         if not insights and phase in [Phase.ACTIVE, Phase.HYPE_DAILY]:
             print(f"No new insights found for {trip.resort_name}. Proceeding with weather only.")
 
+        # Retrieve recent message history for variation
+        recent_messages = get_recent_messages(resort_state)
+        if recent_messages:
+            print(f"Loaded {len(recent_messages)} recent messages for variation context.")
+
         # Drafting Phase
         print(f"Drafting message for {trip.resort_name}...")
         seen_trivia = get_seen_trivia(resort_state)
         seen_challenges = get_seen_challenges(resort_state)
         draft = generate_draft(trip.resort_name, phase.value, weather_info, insights, 
-                              seen_trivia, seen_challenges)
+                              seen_trivia, seen_challenges, recent_messages)
         
         if args.dry_run:
             print("\n--- INITIAL DRAFT ---")
@@ -147,7 +153,7 @@ def main():
         final_message = draft
         for attempt in range(2):
             print(f"Reviewing draft (Attempt {attempt + 1})...")
-            approved, result = review_draft(final_message, trip.resort_name, phase.value)
+            approved, result = review_draft(final_message, trip.resort_name, phase.value, recent_messages)
             
             if approved:
                 print("Draft approved!")
@@ -156,7 +162,12 @@ def main():
             else:
                 print(f"Draft needs revision: {result}")
                 final_message = generate_draft(trip.resort_name, phase.value, weather_info, insights,
-                                              seen_trivia, seen_challenges)
+                                              seen_trivia, seen_challenges, recent_messages)
+
+        # Store the final message for future variation (before sending)
+        if not args.no_state:
+            print(f"Storing message for future variation...")
+            store_message(resort_state, final_message, phase.value, args.mode)
 
         if args.dry_run:
             print(f"\n--- FINAL MESSAGE ({trip.resort_name}) ---")

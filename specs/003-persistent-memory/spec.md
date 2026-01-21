@@ -33,9 +33,8 @@ The agent should remember previously shared insights (URLs) to avoid repetition 
 **Note**: `seen_trivia` and `seen_challenges` store the actual text content (or a hash) of previously shared trivia/challenges to prevent exact repetition.
 
 ## Acceptance Criteria
-- [ ] `state.json` is created automatically if it doesn't exist.
-- [ ] `DiscoveryEngine` returns 0 "seen" insights when filtering.
-- [ ] The LLM prompt includes previously seen trivia/challenges to avoid repetition.
-- [ ] `main.py` successfully extracts and saves trivia/challenge content to state.
-- [ ] `main.py` successfully saves the updated state at the end of a run.
-- [ ] A clear instruction is provided for the GitHub Action to commit this file back to `main`.
+- [x] `state.json` is created automatically if it doesn't exist.
+- [x] `DiscoveryEngine` filters out "seen" insights.
+- [x] LLM prompt includes previously seen trivia/challenges to avoid repetition.
+- [x] State is successfully extracted and updated at the end of a trip run.
+- [x] `MAX_SEEN_URLS` (50) is enforced to prevent bloat.

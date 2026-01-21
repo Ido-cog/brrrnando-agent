@@ -5,6 +5,7 @@ from typing import Dict, List, Set
 
 STATE_FILE = "state.json"
 MAX_SEEN_URLS = 50
+MAX_STORED_MESSAGES = 4
 
 def load_state() -> Dict:
     """Load state from state.json, return empty dict if not found."""
@@ -33,6 +34,7 @@ def get_resort_state(state: Dict, resort_name: str) -> Dict:
             "seen_urls": [],
             "seen_trivia": [],
             "seen_challenges": [],
+            "recent_messages": [],
             "last_run": None
         }
     # Ensure all keys exist for backwards compatibility
@@ -40,6 +42,8 @@ def get_resort_state(state: Dict, resort_name: str) -> Dict:
         state[key]["seen_trivia"] = []
     if "seen_challenges" not in state[key]:
         state[key]["seen_challenges"] = []
+    if "recent_messages" not in state[key]:
+        state[key]["recent_messages"] = []
     return state[key]
 
 def is_url_seen(resort_state: Dict, url: str) -> bool:
@@ -79,3 +83,22 @@ def get_seen_trivia(resort_state: Dict) -> List[str]:
 def get_seen_challenges(resort_state: Dict) -> List[str]:
     """Get list of previously seen challenges."""
     return resort_state.get("seen_challenges", [])
+
+def get_recent_messages(resort_state: Dict) -> List[Dict]:
+    """Get list of recent messages with metadata."""
+    return resort_state.get("recent_messages", [])
+
+def store_message(resort_state: Dict, message: str, phase: str, mode: str):
+    """Store a message with metadata and trim to MAX_STORED_MESSAGES."""
+    messages = resort_state.get("recent_messages", [])
+    
+    message_entry = {
+        "message": message,
+        "timestamp": datetime.now().isoformat(),
+        "phase": phase,
+        "mode": mode
+    }
+    
+    messages.append(message_entry)
+    # Keep only the last MAX_STORED_MESSAGES
+    resort_state["recent_messages"] = messages[-MAX_STORED_MESSAGES:]

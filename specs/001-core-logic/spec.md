@@ -8,38 +8,39 @@
 2. **Evening Hype/Forecast**
    As a group member, I want an evening update (19:00 IST), showing tomorrow's forecast and relevant social media clips, so I can get hyped or prepare for logistics.
 
-3. **Smart Frequency**
-   As a group member, I want the frequency of updates to increase as the trip gets closer (Weekly -> Daily -> Active), so I stay informed without being spammed months in advance.
-    - > 90 days: Silent.
-    - 90-14 days: Weekly (major storms).
-    - 14-2 days before Flight Out: Daily (Forecast + Hype).
-    - 1 day before Flight Out: Logistics focus (Roads to airport, Airport weather).
-    - During Ski Days: Daily Morning/Evening (Snow, Wind, Lifts).
-    - 1 day before Flight Back: Logistics focus (Roads to airport, Airport Weather).
+3. **Smart Frequency & Phases**
+    As a group member, I want the frequency and content of updates to adjust automatically based on the trip's phase.
+    - `WAIT`: > 90 days before flight. Silent.
+    - `PLANNING_WEEKLY`: 14-90 days before flight. Weekly update (Mondays @ 09:00 IST) with long-range trends.
+    - `HYPE_DAILY`: 2-14 days before flight. Daily morning/evening updates.
+    - `LOGISTICS_OUT`: 1 day before flight out. Focus on roads and airport status.
+    - `TRAVEL`: On flight days or gap days not covered by other phases.
+    - `ACTIVE`: During ski dates. High-frequency morning/evening updates.
+    - `LOGISTICS_BACK`: 1 day before flight back. Focus on return logistics.
+    - `POST`: After flight back. Season recap and next trip ideas.
 
 4. **Configurable Trips**
-   As the admin, I want to define trips in a `trips.json` file with flight dates, ski dates, resort names, and specific queries, so I can manage multiple trips easily.
+   As the admin, I want to define trips in `trips.json` with flight dates, ski dates, resort names, coordinates, and elevation data (Summit/Base).
 
 5. **Multi-Channel Delivery (WhatsApp & Telegram)**
-   As a user, I want to receive these reports in my WhatsApp group, but also have a Telegram channel fallback to ensure I never miss an update due to WhatsApp's 24-hour window restrictions.
+   Reports are delivered to both WhatsApp (primary) and Telegram (fallback) to ensure reliability.
 
 ## Acceptance Criteria
 
 ### Core Logic
-- [ ] **State Determination**: The agent correctly identifies the current phase for each trip in `trips.json` relative to the current date.
-- [ ] **Scheduling**: The GitHub Action triggers at the correct UTC times to map to 09:00 IST and 19:00 IST.
+- [x] **Phase Determination**: Correctly maps current date to `Phase` enum (Wait, Planning, Hype, Logistics, Active, Travel, Post).
+- [x] **Scheduling**: GitHub Action triggers at UTC times corresponding to 09:00 IST and 19:00 IST. `PLANNING_WEEKLY` only runs on Mondays.
 
 ### Data Gathering
-- [ ] **Weather**: Successfully fetches Snowfall, Freezing Level, and Windsuped from Open-Meteo API.
-- [ ] **Data Gathering**: Fetches real-time weather (temp, wind, snowfall, snow depth) for resort coordinates.
-- [ ] **Autonomous Discovery**: Performs an initial web/video search and autonomously evaluates if more specific searches (webcams, venue details) are needed.
-- [ ] **Search**: DuckDuckGo search with Tavily fallback for robustness.
+- [x] **Weather**: Fetches current and forecast data from Open-Meteo for resort coordinates. Supports separate Summit and Base elevation queries for accurate snow depth and wind.
+- [x] **Autonomous Discovery**: LLM evaluates initial findings and requests refined searches (webcams, menus) if needed.
+- [x] **Search**: Integration with DuckDuckGo (via search tools) for live web and video data.
 
 ### Synthesis & Output
-- [ ] **Gemini Integration**: Prompts Gemini 2.5 Flash with raw data and receives a "balanced hype" natural language summary (thrilling and fun, yet grounded in data).
-- [ ] **Multi-Channel Integration**: Successfully sends the generated message to both the configured WhatsApp number/Group and the Telegram Bot/Channel.
+- [x] **Gemini Integration**: Uses `gemini-2.5-flash` for high-energy, data-grounded message synthesis.
+- [x] **Review Loop**: A second LLM pass validates the draft for placeholders and quality before sending.
+- [x] **Multi-Channel Delivery**: Sends to both configured WhatsApp and Telegram channels.
 
 ### Config & Deployment
-- [ ] **Config Schema**: `trips.json` supports `flight_out_date`, `ski_start_date`, `ski_end_date`, `flight_back_date`.
-- [ ] **Secrets**: API keys (Gemini, WhatsApp, Search) are read from Environment Variables.
-- [ ] **GitHub Action**: Workflow file exists and passes the static check (linting) and runs successfully in the repo.
+- [x] **Config Schema**: `trips.json` supports full lifecycle dates and resort metadata.
+- [x] **GitHub Action**: Managed via `.github/workflows/run_agent.yml` (or similar).

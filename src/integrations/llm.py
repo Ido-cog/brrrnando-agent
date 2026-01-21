@@ -46,7 +46,8 @@ def _call_with_retry(model_method, *args, **kwargs):
         return type('obj', (object,), {'text': f"Error: {str(e)}"})
 
 def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any], 
-                   seen_trivia: List[str] = None, seen_challenges: List[str] = None) -> str:
+                   seen_trivia: List[str] = None, seen_challenges: List[str] = None,
+                   recent_messages: List[Dict] = None) -> str:
     """
     Drafts a high-energy WhatsApp message based on context.
     """
@@ -62,6 +63,22 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     if seen_challenges and len(seen_challenges) > 0:
         seen_challenges_str = "\n\nPREVIOUSLY SHARED CHALLENGES (DO NOT REPEAT):\n" + "\n".join([f"- {c}" for c in seen_challenges[-10:]])
     
+    # Format recent messages history for variation guidance
+    recent_messages_str = ""
+    if recent_messages and len(recent_messages) > 0:
+        recent_messages_str = "\n\nRECENT MESSAGES HISTORY (FOR VARIATION REFERENCE):" 
+        recent_messages_str += "\nYou MUST vary your new message from these recent ones. Use different:" 
+        recent_messages_str += "\n- Opening greetings and sentence structures" 
+        recent_messages_str += "\n- Topic emphasis (weather vs. local events vs. webcams vs. restaurants)" 
+        recent_messages_str += "\n- Tone and energy levels" 
+        recent_messages_str += "\n- Phrasing for similar data points\n"
+        for i, msg in enumerate(recent_messages[-4:], 1):
+            timestamp = msg.get('timestamp', 'unknown')
+            phase = msg.get('phase', 'unknown')
+            mode = msg.get('mode', 'unknown')
+            message = msg.get('message', '')[:400]  # Limit to first 400 chars to save tokens
+            recent_messages_str += f"\n--- MESSAGE {i} ({timestamp[:10]}, {phase}, {mode}) ---\n{message}\n"
+    
     prompt = f"""
     You are Brrrnando, a thrilling and high-energy ski trip assistant.
     Your job is to draft an atmospheric and data-dense WhatsApp message for the group '{trip_name}'.
@@ -72,6 +89,7 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     {insights_str}
     {seen_trivia_str}
     {seen_challenges_str}
+    {recent_messages_str}
     
     If CURRENT PHASE is 'active', you MUST include a special engagement section at the end:
     EITHER '--- 🏆 BRRRNANDO'S DAILY CHALLENGE ---' (a fun, safe physical or social task)
@@ -94,12 +112,20 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     response = _call_with_retry(model.generate_content, prompt)
     return response.text
 
-def review_draft(draft: str, trip_name: str, phase_name: str) -> Tuple[bool, str]:
+def review_draft(draft: str, trip_name: str, phase_name: str, recent_messages: List[Dict] = None) -> Tuple[bool, str]:
     """
     Reviews the draft for quality, clarity, and presence of placeholders.
     Returns (is_approved, finalized_content_or_feedback).
     """
     model = _get_model()
+    
+    # Add recent messages context if available
+    recent_context = ""
+    if recent_messages and len(recent_messages) > 0:
+        recent_context = "\n\nRECENT MESSAGES (check for excessive similarity):\n"
+        for msg in recent_messages[-2:]:  # Only show last 2 for review
+            message_preview = msg.get('message', '')[:200]
+            recent_context += f"- {message_preview}...\n"
     
     prompt = f"""
     Review the following WhatsApp message draft for the trip '{trip_name}' in phase '{phase_name}'.
@@ -107,12 +133,13 @@ def review_draft(draft: str, trip_name: str, phase_name: str) -> Tuple[bool, str
     DRAFT:
     ---
     {draft}
-    ---
+    ---{recent_context}
     
     TASKS:
     1. Ensure there are NO placeholders (e.g., [Resort], ???).
     2. Ensure the message doesn't say "could not get info" or similar dismissive phrases.
     3. Ensure the tone is high-energy and appropriate for the phase.
+    4. If recent messages are provided, check that this draft has sufficient variation in opening, structure, and emphasis.
     
     If it's good, respond with 'APPROVED' followed by the EXACT message on the next line.
     If it needs fixes, respond with 'REVISE' followed by specific instructions for the drafter.

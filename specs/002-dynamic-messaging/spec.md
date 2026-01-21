@@ -53,24 +53,25 @@ The agent reviews its own drafted message before sending. It checks for clarity,
 
 ### Functional Requirements
 
-- **FR-001**: System MUST determine the "Trip Stage" relative to `trips.json` dates (Planning, Prep, Logistics, Active).
-- **FR-002**: System MUST implement a "Discovery Engine" using web search (Brave/DDG) to find resort-specific events/news.
-- **FR-003**: System MUST identify "Creative Content" (festivals, sales, videos, maps) based on the trip stage.
-- **FR-004**: System MUST implement a two-stage LLM process: **Draft** -> **Review**.
-- **FR-005**: System MUST forbid placeholders or "failure to find" messaging in the final output.
-- **FR-006**: System MUST persist or "remember" what was sent recently to avoid duplicating "local gems" in subsequent messages (within a single run or across runs if state is managed). *Note: Per Constitution, state should be minimal, but we might need a way to track "seen" events.*
+- **FR-001**: System MUST determine the "Phase" relative to `trips.json` dates (Wait, Planning, Hype, Logistics, Active, Travel, Post).
+- **FR-002**: System MUST implement a "Discovery Engine" using web and video search to find resort-specific events/news.
+- **FR-003**: System MUST identify "Creative Content" (festivals, sales, videos, maps) and perform **Autonomous Discovery** where the LLM evaluates initial findings and requests 2-3 refined queries if more "flavor" is needed.
+- **FR-004**: System MUST implement a two-stage LLM process: **Draft** -> **Review**. The review loop allows for up to 2 attempts, where a rejection triggers a new draft generation based on critique.
+- **FR-005**: System MUST forbid placeholders ([Resort], ???) or generic dismissive phrases ("could not get info") in the final output.
+- **FR-006**: System MUST persist previously shared URLs, trivia, and challenges to avoid duplication.
+- **FR-007**: System MUST adhere to "Balanced Hype" tone: Professional, data-grounded, but energetic.
+- **FR-008**: System MUST enforce specific "Banned Words" (Legends, Magic, Wooohooo, CHOO CHOO, EPIC, Woooooow) and WhatsApp formatting (bolding, short paragraphs).
 
-### Key Entities *(include if feature involves data)*
-
-- **Trip Stage**: An ENUM representing the current relationship between the run date and trip dates.
+### Key Entities
+- **Phase**: An ENUM representing the current relationship between the run date and trip dates.
 - **Insight**: A piece of discovered information (Text, URL, Type) to be used in the message.
 - **Draft**: The candidate message produced by the first LLM pass.
-- **Review Report**: The critique and status (Go/No-Go) of the Draft.
+- **Review Report**: The critique and status (APPROVED/REVISE) of the Draft.
 
-## Success Criteria *(mandatory)*
+## Success Criteria
 
 ### Measurable Outcomes
-
-- **SC-001**: 100% of messages during the "Active" stage contain at least one resort-specific "Local Insight".
-- **SC-002**: 0% of messages sent to WhatsApp contain placeholders like "???", "N/A", or "Could not find".
-- **SC-003**: The "Review Loop" successfully identifies and triggers revisions for at least 90% of intentionally sabotaged drafts (tested via unit tests).
+- [x] **SC-001**: 100% of messages during the "Active" stage contain at least one resort-specific "Local Insight".
+- [x] **SC-002**: 0% of messages sent contain placeholders like "???", "[Resort]", or "Could not find info".
+- [x] **SC-003**: The "Review Loop" successfully identifies and triggers revisions for drafts failing quality checks.
+- [x] **SC-004**: Messages adhere to "Balanced Hype" style guide and avoid banned "cringe" words.
