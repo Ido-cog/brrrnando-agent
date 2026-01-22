@@ -79,34 +79,25 @@ def main():
         if phase in [Phase.ACTIVE, Phase.HYPE_DAILY, Phase.LOGISTICS_OUT, Phase.LOGISTICS_BACK, Phase.TRAVEL, Phase.PLANNING_WEEKLY]:
             try:
                 if trip.summit_elevation and trip.base_elevation:
-                    weather_summit = get_weather_data(trip.lat, trip.lon, trip.summit_elevation)
-                    weather_base = get_weather_data(trip.lat, trip.lon, trip.base_elevation)
-                    
-                    snow_depth_summit = weather_summit.get("current", {}).get("snow_depth", 0)
-                    snow_depth_base = weather_base.get("current", {}).get("snow_depth", 0)
-                    snowfall_list = weather_summit.get("daily", {}).get("snowfall_sum", [])
-                    total_weekly_snow_cm = round(sum(snowfall_list), 1) if snowfall_list else 0
+                    weather_summit = get_weather_data(trip.lat, trip.lon, trip.resort_name, trip.summit_elevation)
+                    weather_base = get_weather_data(trip.lat, trip.lon, trip.resort_name, trip.base_elevation)
                     
                     weather_info = {
-                        "summit_snow_depth": snow_depth_summit,
-                        "base_snow_depth": snow_depth_base,
-                        "weekly_snowfall_forecast_cm": total_weekly_snow_cm,
-                        "temp_summit": weather_summit.get("current", {}).get("temperature_2m"),
-                        "wind_summit": weather_summit.get("current", {}).get("wind_speed_10m")
+                        "summit_snow_depth": weather_summit.get("snow_depth"),
+                        "base_snow_depth": weather_base.get("snow_depth"),
+                        "weekly_snowfall_forecast_cm": weather_summit.get("weekly_snowfall_forecast_cm"),
+                        "temp_summit": weather_summit.get("temp_current"),
+                        "wind_summit": weather_summit.get("wind_current"),
+                        "forecast_confidence": weather_summit.get("forecast_confidence"),
+                        "weather_sources": weather_summit.get("sources")
                     }
                 else:
-                    weather = get_weather_data(trip.lat, trip.lon)
-                    current = weather.get("current", {})
-                    snowfall_list = weather.get("daily", {}).get("snowfall_sum", [])
-                    total_weekly_snow_cm = round(sum(snowfall_list), 1) if snowfall_list else 0
-                    weather_info = {
-                        "snow_depth": current.get("snow_depth", 0),
-                        "temp_current": current.get("temperature_2m"),
-                        "wind_current": current.get("wind_speed_10m"),
-                        "weekly_snowfall_forecast_cm": total_weekly_snow_cm
-                    }
+                    weather = get_weather_data(trip.lat, trip.lon, trip.resort_name)
+                    weather_info = weather
             except Exception as e:
                 print(f"Error gathering weather: {e}")
+                import traceback
+                traceback.print_exc()
 
         # Discovery Phase
         print(f"Running discovery for {trip.resort_name}...")

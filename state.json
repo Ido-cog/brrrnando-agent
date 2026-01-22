@@ -20,12 +20,24 @@
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-01-21T18:53:02.533321",
+    "last_run": "2026-01-22T02:08:20.161173",
     "recent_messages": [
       {
         "message": "Error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
         "timestamp": "2026-01-21T18:53:02.532751",
         "phase": "logistics_out",
+        "mode": "morning"
+      },
+      {
+        "message": "Error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+        "timestamp": "2026-01-22T02:07:53.473683",
+        "phase": "travel",
+        "mode": "morning"
+      },
+      {
+        "message": "Error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]",
+        "timestamp": "2026-01-22T02:08:20.160735",
+        "phase": "travel",
         "mode": "morning"
       }
     ]

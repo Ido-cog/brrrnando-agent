@@ -108,6 +108,11 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     8. DO NOT use placeholders.
     9. Ensure challenges/trivia are hyper-specific to {trip_name}.
     10. Link Formatting: When including URLs, use descriptive text, NOT the URL itself. Format as [descriptive text](URL), NEVER as [URL](URL). Example: 'Check pass status' not 'https://example.com'.
+    11. Source Attribution: You MUST mention where the snow forecast comes from (e.g. "Forecasts from Open-Meteo & Snow-Forecast agree on...").
+    12. Confidence: If input 'forecast_confidence' is provided in WEATHER DATA, use it to frame your tone. 
+        - High: "Confidence is high...", "All models agree..."
+        - Medium: "Sources point to...", "Likely..."
+        - Low: "Forecasts are mixed...", "Uncertainty suggests..."
     """
     
     response = _call_with_retry(model.generate_content, prompt)
