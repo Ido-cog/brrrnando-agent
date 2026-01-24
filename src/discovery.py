@@ -1,4 +1,5 @@
 from typing import List, Dict
+from datetime import date
 from dataclasses import dataclass
 from .models import Trip
 from .logic import Phase, PHASE_SEARCH_INTENT
@@ -17,7 +18,7 @@ class DiscoveryEngine:
     def __init__(self):
         pass
 
-    def discover_insights(self, trip: Trip, phase: Phase, resort_state: Dict = None) -> List[Insight]:
+    def discover_insights(self, trip: Trip, phase: Phase, resort_state: Dict = None, current_date: date = None) -> List[Insight]:
         """
         Orchestrates web search and video discovery based on the trip's current phase.
         """
@@ -27,9 +28,15 @@ class DiscoveryEngine:
 
         insights = []
         resort = trip.resort_name
+        
+        # Determine current month and year for filtering (e.g. "January 2026")
+        date_suffix = ""
+        if current_date:
+            date_suffix = f" {current_date.strftime('%B %Y')}"
 
         for intent in intents:
-            query = f"{resort} {intent}"
+            # Append date suffix to query to avoid outdated results
+            query = f"{resort} {intent}{date_suffix}"
             
             # For HYPE_DAILY or ACTIVE, try to find videos
             if phase in [Phase.HYPE_DAILY, Phase.ACTIVE]:

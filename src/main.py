@@ -101,7 +101,7 @@ def main():
 
         # Discovery Phase
         print(f"Running discovery for {trip.resort_name}...")
-        insights = discovery_engine.discover_insights(trip, phase, resort_state)
+        insights = discovery_engine.discover_insights(trip, phase, resort_state, current_date)
         
         # Iterative Search (Autonomous Discovery)
         if phase in [Phase.HYPE_DAILY, Phase.ACTIVE]:
@@ -137,16 +137,8 @@ def main():
         else:
             ski_days_left = None
 
-        # STRICT CONTROL: If trip is ending (<= 2 days), user doesn't care about next week. Remove the data.
-        if ski_days_left is not None and ski_days_left <= 2:
-            keys_to_remove = ["weekly_snowfall_forecast_cm", "snow_future_forecast_cm"]
-            for key in keys_to_remove:
-                if key in weather_info:
-                    print(f"STRICT CONTROL: Removing {key} ({weather_info[key]}cm) as only {ski_days_left} days left.")
-                    del weather_info[key]
-
         draft = generate_draft(trip.resort_name, phase.value, weather_info, insights, 
-                              seen_trivia, seen_challenges, recent_messages, ski_days_left)
+                              seen_trivia, seen_challenges, recent_messages, ski_days_left, current_date=current_date)
         
         if args.dry_run:
             print("\n--- INITIAL DRAFT ---")

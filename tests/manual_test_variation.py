@@ -2,6 +2,7 @@
 import sys
 import os
 import random
+from datetime import date
 # Ensure src module can be found
 sys.path.append(os.getcwd())
 
@@ -13,6 +14,7 @@ def test_natural_messaging():
     # Mock Data
     trip_name = "Test Resort"
     phase_name = "active"
+    current_date = date(2026, 1, 24)
     
     # Scenario A: Mid-trip (Plenty of time) -> Should show future snow
     weather_data_mid = {
@@ -32,7 +34,8 @@ def test_natural_messaging():
     print("Expected: Shows Future Outlook.")
     prompt_mid = generate_draft(
         trip_name, phase_name, weather_data_mid, insights, 
-        seen_trivia, seen_challenges, recent_messages, ski_days_left=5, return_prompt=True
+        seen_trivia, seen_challenges, recent_messages, ski_days_left=5, 
+        current_date=current_date, return_prompt=True
     )
     
     if "Future Outlook (>48h): 25.0cm" in prompt_mid:
@@ -40,35 +43,33 @@ def test_natural_messaging():
     else:
         print("[FAILURE] Future snow missing but should be there.")
         
-    if "CURRENT PERSONA:" in prompt_mid:
-        print(f"[SUCCESS] Persona injected: {prompt_mid.split('CURRENT PERSONA:')[1].splitlines()[0]}")
+    if "TODAY'S DATE: January 24, 2026" in prompt_mid:
+        print("[SUCCESS] Date correctly injected.")
     else:
-        print("[FAILURE] Persona missing.")
+        print("[FAILURE] Date missing from prompt.")
 
-    # Scenario B: End-trip (2 days left) -> Should HIDE future snow
-    # Note: In main.py, the key is deleted BEFORE calling generate_draft. 
-    # Here we mock that deletions by removing the key from input.
+    # Scenario B: End-Trip (2 days left) -> Should SHOW future snow but instructing context
+    # Note: main.py NO LONGER deletes the key. So we pass full data.
     weather_data_end = weather_data_mid.copy()
-    del weather_data_end["snow_future_forecast_cm"]
     
     print("\n--- TEST CASE 2: End-Trip (2 days left) ---")
-    print("Expected: Future Outlook line is GONE.")
+    print("Expected: Future Outlook present, but specific instructions to frame it as 'next year'.")
     
     prompt_end = generate_draft(
         trip_name, phase_name, weather_data_end, insights, 
-        seen_trivia, seen_challenges, recent_messages, ski_days_left=2, return_prompt=True
+        seen_trivia, seen_challenges, recent_messages, ski_days_left=2,
+        current_date=current_date, return_prompt=True
     )
     
     if "Future Outlook" in prompt_end:
-        print("[FAILURE] Future Outlook line is present (should be hidden).")
-        print(prompt_end) # Debug
+        print("[SUCCESS] Future Outlook line is present (Bot has awareness).")
     else:
-        print("[SUCCESS] Future Outlook line is hidden.")
+        print("[FAILURE] Future Outlook line is hidden (Bot is blind).")
         
-    if "IGNORE any long-range" in prompt_end:
-        print("[SUCCESS] Found critical instruction to ignore long-range.")
+    if "reason to come back" in prompt_end:
+        print("[SUCCESS] Found instruction to frame future snow as 'reason to come back'.")
     else:
-         print("[FAILURE] Critical instruction missing.")
+         print("[FAILURE] Contextual instruction missing.")
 
 if __name__ == "__main__":
     test_natural_messaging()

@@ -1,7 +1,8 @@
 import time
 import re
 import random
-from typing import List, Dict, Tuple, Any
+from typing import List, Dict, Tuple, Any, Optional
+from datetime import date
 import google.generativeai as genai
 from google.api_core import exceptions
 import os
@@ -48,7 +49,8 @@ def _call_with_retry(model_method, *args, **kwargs):
 
 def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any], 
                    seen_trivia: List[str] = None, seen_challenges: List[str] = None,
-                   recent_messages: List[Dict] = None, ski_days_left: int = None, return_prompt: bool = False) -> str:
+                   recent_messages: List[Dict] = None, ski_days_left: int = None, 
+                   current_date: date = None, return_prompt: bool = False) -> str:
     """
     Drafts a high-energy WhatsApp message based on context.
     """
@@ -83,9 +85,13 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     relevance_instruction = ""
     if ski_days_left is not None:
         if ski_days_left <= 2:
-            relevance_instruction = f"CRITICAL: There are only {ski_days_left} days left. IGNORE any long-range/weekly forecasts. Focus ONLY on the immediate weather (Next 48h)."
+            relevance_instruction = f"CRITICAL: There are only {ski_days_left} days left. \n1. Focus heavily on immediate conditions (Next 48h).\n2. Frame 'Future Outlook' snow ONLY as a reason to come back next year, NOT as something they will ski this trip.\n3. Mention travel logistics/safe journey home if relevant."
         else:
             relevance_instruction = f"Trip Status: {ski_days_left} days of skiing remain."
+
+    date_context = ""
+    if current_date:
+        date_context = f"TODAY'S DATE: {current_date.strftime('%B %d, %Y')}\n(Do NOT recommend events that happened before today!)"
 
     # Select a random persona for variation
     personas = [
@@ -119,6 +125,7 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     Your job is to draft a WhatsApp message for the group '{trip_name}'.
     
     CURRENT PHASE: {phase_name}
+    {date_context}
     {relevance_instruction}
     
     WEATHER DATA:

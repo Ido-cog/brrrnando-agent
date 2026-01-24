@@ -1,6 +1,6 @@
 # Tasks: Natural, Context-Aware Messaging
 
-- [x] Implement strict data filtering (Hide future snow if trip > 2 days) <!-- id: 0 -->
-- [x] Refactor LLM prompt to remove rigid headers <!-- id: 1 -->
-- [x] Inject "Style/Persona" variance into prompts <!-- id: 2 -->
-- [x] Verify with `manual_test_variation.py` covering new scenarios <!-- id: 3 -->
+- [x] Revert strict data filtering (User wants context, not hiding) <!-- id: 0 -->
+- [x] Implement Month-Specific discovery queries (e.g. "January 2026") <!-- id: 1 -->
+- [x] Update LLM Prompt with Current Date & Trip Status Context <!-- id: 2 -->
+- [x] Verify date awareness with tests <!-- id: 3 -->
