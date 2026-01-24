@@ -1,5 +1,6 @@
 import time
 import re
+import random
 from typing import List, Dict, Tuple, Any
 import google.generativeai as genai
 from google.api_core import exceptions
@@ -81,18 +82,48 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     
     relevance_instruction = ""
     if ski_days_left is not None:
-        if ski_days_left <= 3:
-            relevance_instruction = f"CRITICAL: There are only {ski_days_left} days left of skiing. IGNORE any long-range/weekly forecasts. Focus ONLY on the weather for today and tomorrow. The user does not care about next week."
+        if ski_days_left <= 2:
+            relevance_instruction = f"CRITICAL: There are only {ski_days_left} days left. IGNORE any long-range/weekly forecasts. Focus ONLY on the immediate weather (Next 48h)."
         else:
             relevance_instruction = f"Trip Status: {ski_days_left} days of skiing remain."
 
+    # Select a random persona for variation
+    personas = [
+        "The Hype Man (High energy, lots of emojis, focus on excitement)",
+        "The Local Guide (Knowledgeable, authoritative, focus on specific spots)",
+        "The Powder Hound (Focused purely on snow quality and conditions)",
+        "The Chill Friend (Relaxed, conversational, less formatting)",
+    ]
+    persona = random.choice(personas)
+
+    # Format weather specifically
+    weather_lines = []
+    weather_lines.append(f"- Snow Depth (Base): {weather_data.get('base_snow_depth', 'N/A')}cm")
+    weather_lines.append(f"- Snow Depth (Summit): {weather_data.get('summit_snow_depth', 'N/A')}cm")
+    
+    if "snow_48h_forecast_cm" in weather_data:
+         weather_lines.append(f"- Incoming Fresh Snow (Next 48h): {weather_data['snow_48h_forecast_cm']}cm")
+         
+    if "snow_future_forecast_cm" in weather_data:
+         weather_lines.append(f"- Future Outlook (>48h): {weather_data['snow_future_forecast_cm']}cm")
+         
+    weather_lines.append(f"- Summit Temp: {weather_data.get('temp_summit', 'N/A')}")
+    weather_lines.append(f"- Forecast Confidence: {weather_data.get('forecast_confidence', 'N/A')}")
+    
+    weather_display = "\n    ".join(weather_lines)
+
     prompt = f"""
-    You are Brrrnando, a thrilling and high-energy ski trip assistant.
-    Your job is to draft an atmospheric and data-dense WhatsApp message for the group '{trip_name}'.
+    You are Brrrnando.
+    CURRENT PERSONA: {persona} (Adopt this style heavily!)
+    
+    Your job is to draft a WhatsApp message for the group '{trip_name}'.
     
     CURRENT PHASE: {phase_name}
     {relevance_instruction}
-    WEATHER DATA: {weather_data}
+    
+    WEATHER DATA:
+    {weather_display}
+    
     LOCAL INSIGHTS:
     {insights_str}
     {seen_trivia_str}
@@ -100,19 +131,17 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     {recent_messages_str}
     
     GUIDELINES:
-    1. Tone: "Balanced Hype". Professional, grounded in data, but energetic and fun. Avoid being overly serious.
-    2. Data Density: Include specific numbers (snow depth, temps) BUT...
-    3. ANTI-REPETITION: CHECK 'RECENT MESSAGES' above. If static data (like Base Depth) has NOT changed since the last message, DO NOT Mention it again. Find something else to highlight.
-    4. Venue & Insights: You MUST mention at least one specific restaurant, bar, or local venue by name from 'LOCAL INSIGHTS' if available.
-    5. Anti-Filler: BAN generic paragraphs. Every sentence must deliver data or specific local flavor.
-    6. Banned Words: NEVER use "Legends", "Magic", "Wooohooo", "CHOO CHOO", "EPIC", "Woooooow".
+    1. Tone: Match the CURRENT PERSONA. Be distinct from previous messages.
+    2. Data Density: Use the 'Incoming Fresh Snow' data to hype immediate skiing.
+    3. ANTI-REPETITION: CHECK 'RECENT MESSAGES'. Do not repeat static stats if they haven't changed.
+    4. Venue & Insights: Mention one specific spot from insights naturally.
+    5. Anti-Filler: Every sentence must add value.
+    6. STRICTLY BANNED PHRASES: Do NOT use "--- 🏆 BRRRNANDO'S DAILY CHALLENGE ---", "--- 💡 SKI NERD TRIVIA ---", "Legends", "Magic", "Wooohooo", "CHOO CHOO".
     7. Structure:
-       - Be organic. Do NOT follow a rigid template.
-       - Vary paragraph lengths.
-       - IF appropriate (and not recently used), include a Trivia or Challenge, but weave it in naturally. Do NOT force a dedicated section header if it feels robotic.
-    8. Link Formatting: Use [descriptive text](URL).
-    9. Source Attribution: Mention weather sources (e.g. "Forecasts from Open-Meteo...").
-    10. Confidence: Use 'forecast_confidence' from data to frame tone (High/Medium/Low).
+       - Be organic. NO rigid headers.
+       - If you include trivia/challenges, weave them into the flow conversationally (e.g. "By the way, did you guys know...").
+    8. Link Formatting: [descriptive text](URL).
+    9. Source Attribution: Mention weather sources naturally.
     """
     
     if return_prompt:

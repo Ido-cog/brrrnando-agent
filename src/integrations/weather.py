@@ -34,6 +34,9 @@ def get_weather_data(lat: float, lon: float, resort_name: str, elevation: int = 
     
     # 3. Process Open-Meteo Data
     om_snow_cm = 0.0
+    om_immediate_cm = 0.0
+    om_future_cm = 0.0
+    
     current_temp = None
     current_wind = None
     snow_depth = 0.0
@@ -46,14 +49,21 @@ def get_weather_data(lat: float, lon: float, resort_name: str, elevation: int = 
         
         daily_snow_sum = om_data.get("daily", {}).get("snowfall_sum", [])
         # Sum next 6 days to match Snow-Forecast (approx)
-        om_snow_cm = sum(daily_snow_sum[:6]) 
+        om_snow_cm = sum(daily_snow_sum[:6])
+        
+        # Calculate distribution: Immediate (Day 0 + Day 1) vs Future (Day 2 to 5)
+        if len(daily_snow_sum) >= 2:
+            om_immediate_cm = sum(daily_snow_sum[:2])
+            om_future_cm = sum(daily_snow_sum[2:6])
+        else:
+            om_immediate_cm = om_snow_cm
     
     # 4. Aggregation Logic
     aggregated_snow = 0.0
     confidence = ConfidenceLevel.LOW
     sources = []
     
-    sf_snow_cm = sf_data.get("total_snow_cm")
+    sf_snow_cm = sf_data.get("total_snow_cm", 0.0)
     
     if om_data and sf_data:
         # Both sources available
@@ -86,12 +96,30 @@ def get_weather_data(lat: float, lon: float, resort_name: str, elevation: int = 
     else:
         # No data
         confidence = ConfidenceLevel.LOW
-        
+    
+    # Apply Open-Meteo distribution to Aggregated Total
+    agg_immediate = 0.0
+    agg_future = 0.0
+    
+    if aggregated_snow > 0:
+        if om_snow_cm > 0:
+            ratio = om_immediate_cm / om_snow_cm
+            agg_immediate = aggregated_snow * ratio
+            agg_future = aggregated_snow * (1 - ratio)
+        else:
+            # Fallback: if OM has 0 snow but SF has snow, assume 50/50 split? 
+            # Or assume immediate (safer for skiing hype).
+            # Let's assume immediate for hype.
+            agg_immediate = aggregated_snow
+            agg_future = 0.0
+            
     return {
         "temp_current": current_temp,
         "wind_current": current_wind,
         "snow_depth": snow_depth,
         "weekly_snowfall_forecast_cm": round(aggregated_snow, 1),
+        "snow_48h_forecast_cm": round(agg_immediate, 1),
+        "snow_future_forecast_cm": round(agg_future, 1),
         "forecast_confidence": confidence,
         "sources": [s.value for s in sources],
         "debug_om_snow": round(om_snow_cm, 1),
