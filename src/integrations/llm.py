@@ -47,7 +47,7 @@ def _call_with_retry(model_method, *args, **kwargs):
 
 def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights: List[Any], 
                    seen_trivia: List[str] = None, seen_challenges: List[str] = None,
-                   recent_messages: List[Dict] = None) -> str:
+                   recent_messages: List[Dict] = None, ski_days_left: int = None, return_prompt: bool = False) -> str:
     """
     Drafts a high-energy WhatsApp message based on context.
     """
@@ -79,11 +79,19 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
             message = msg.get('message', '')[:400]  # Limit to first 400 chars to save tokens
             recent_messages_str += f"\n--- MESSAGE {i} ({timestamp[:10]}, {phase}, {mode}) ---\n{message}\n"
     
+    relevance_instruction = ""
+    if ski_days_left is not None:
+        if ski_days_left <= 3:
+            relevance_instruction = f"CRITICAL: There are only {ski_days_left} days left of skiing. IGNORE any long-range/weekly forecasts. Focus ONLY on the weather for today and tomorrow. The user does not care about next week."
+        else:
+            relevance_instruction = f"Trip Status: {ski_days_left} days of skiing remain."
+
     prompt = f"""
     You are Brrrnando, a thrilling and high-energy ski trip assistant.
     Your job is to draft an atmospheric and data-dense WhatsApp message for the group '{trip_name}'.
     
     CURRENT PHASE: {phase_name}
+    {relevance_instruction}
     WEATHER DATA: {weather_data}
     LOCAL INSIGHTS:
     {insights_str}
@@ -91,30 +99,25 @@ def generate_draft(trip_name: str, phase_name: str, weather_data: Dict, insights
     {seen_challenges_str}
     {recent_messages_str}
     
-    If CURRENT PHASE is 'active', you MUST include a special engagement section at the end:
-    EITHER '--- 🏆 BRRRNANDO'S DAILY CHALLENGE ---' (a fun, safe physical or social task)
-    OR '--- 💡 SKI NERD TRIVIA ---' (an interesting fact about the resort geography, history, or quirks).
-    Use the LOCAL INSIGHTS and your own training data about {trip_name} to make it hyper-specific.
-    IMPORTANT: Do NOT repeat any trivia or challenges from the "PREVIOUSLY SHARED" lists above.
-    
     GUIDELINES:
-    1. Tone: "Balanced Hype". Professional, grounded in data, but energetic and fun. Avoid being overly serious or "monotone".
-    2. Data Density: You MUST include specific numbers (e.g., Summit/Base snow depth, temperates).
-    3. Venue & Insights: You MUST mention at least one specific restaurant, bar, or local venue by name from 'LOCAL INSIGHTS' if available.
-    4. Sourcing: aim to include at least one link/URL from 'LOCAL INSIGHTS' if available. Must if trip is 'active'.
-    5. Anti-Filler: BAN generic paragraphs that contain no data (e.g., "The excitement is building..."). Every sentence must either deliver data or a specific local fact.
+    1. Tone: "Balanced Hype". Professional, grounded in data, but energetic and fun. Avoid being overly serious.
+    2. Data Density: Include specific numbers (snow depth, temps) BUT...
+    3. ANTI-REPETITION: CHECK 'RECENT MESSAGES' above. If static data (like Base Depth) has NOT changed since the last message, DO NOT Mention it again. Find something else to highlight.
+    4. Venue & Insights: You MUST mention at least one specific restaurant, bar, or local venue by name from 'LOCAL INSIGHTS' if available.
+    5. Anti-Filler: BAN generic paragraphs. Every sentence must deliver data or specific local flavor.
     6. Banned Words: NEVER use "Legends", "Magic", "Wooohooo", "CHOO CHOO", "EPIC", "Woooooow".
-    7. Format: Use WhatsApp formatting (bolding, short paragraphs). Keep it punchy.
-    8. DO NOT use placeholders.
-    9. Ensure challenges/trivia are hyper-specific to {trip_name}.
-    10. Link Formatting: When including URLs, use descriptive text, NOT the URL itself. Format as [descriptive text](URL), NEVER as [URL](URL). Example: 'Check pass status' not 'https://example.com'.
-    11. Source Attribution: You MUST mention where the snow forecast comes from (e.g. "Forecasts from Open-Meteo & Snow-Forecast agree on...").
-    12. Confidence: If input 'forecast_confidence' is provided in WEATHER DATA, use it to frame your tone. 
-        - High: "Confidence is high...", "All models agree..."
-        - Medium: "Sources point to...", "Likely..."
-        - Low: "Forecasts are mixed...", "Uncertainty suggests..."
+    7. Structure:
+       - Be organic. Do NOT follow a rigid template.
+       - Vary paragraph lengths.
+       - IF appropriate (and not recently used), include a Trivia or Challenge, but weave it in naturally. Do NOT force a dedicated section header if it feels robotic.
+    8. Link Formatting: Use [descriptive text](URL).
+    9. Source Attribution: Mention weather sources (e.g. "Forecasts from Open-Meteo...").
+    10. Confidence: Use 'forecast_confidence' from data to frame tone (High/Medium/Low).
     """
     
+    if return_prompt:
+        return prompt
+
     response = _call_with_retry(model.generate_content, prompt)
     return response.text
 

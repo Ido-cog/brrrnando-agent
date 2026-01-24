@@ -132,8 +132,13 @@ def main():
         print(f"Drafting message for {trip.resort_name}...")
         seen_trivia = get_seen_trivia(resort_state)
         seen_challenges = get_seen_challenges(resort_state)
+        if phase == Phase.ACTIVE:
+            ski_days_left = (trip.ski_end_date - current_date).days + 1
+        else:
+            ski_days_left = None
+
         draft = generate_draft(trip.resort_name, phase.value, weather_info, insights, 
-                              seen_trivia, seen_challenges, recent_messages)
+                              seen_trivia, seen_challenges, recent_messages, ski_days_left)
         
         if args.dry_run:
             print("\n--- INITIAL DRAFT ---")
@@ -153,7 +158,7 @@ def main():
             else:
                 print(f"Draft needs revision: {result}")
                 final_message = generate_draft(trip.resort_name, phase.value, weather_info, insights,
-                                              seen_trivia, seen_challenges, recent_messages)
+                                              seen_trivia, seen_challenges, recent_messages, ski_days_left)
 
         # Store the final message for future variation (before sending)
         if not args.no_state:
