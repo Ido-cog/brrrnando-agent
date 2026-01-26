@@ -1,8 +1,6 @@
 {
   "livigno": {
     "seen_urls": [
-      "https://www.livigno.eu/en/",
-      "https://www.ski.com/ski-resorts/italy/livigno",
       "https://www.tripadvisor.co.uk/ShowTopic-g194799-i8056-k6109516-Livigno_tips_for_first_timer-Livigno_Province_of_Sondrio_Lombardy.html",
       "https://www.livigno.eu/en/lifts",
       "https://www.carosello3000.com/en/summer/my3000-live/open-lifts-livigno",
@@ -50,7 +48,9 @@
       "https://www.viamichelin.com/maps/traffic/italy/lombardy/sondrio/livigno-23030",
       "https://www.weatherapi.com/",
       "https://world-weather.info/forecast/italy/livigno/month/",
-      "https://www.alpinbus.com/transfers-to-livigno/"
+      "https://www.alpinbus.com/transfers-to-livigno/",
+      "https://www.tripadvisor.com/ShowTopic-g194799-i8056-k13123388-Airport_transfer-Livigno_Province_of_Sondrio_Lombardy.html",
+      "https://www.livignoexpress.com/en/"
     ],
     "seen_trivia": [
       "Livigno's unique status as a duty-free area is well-known, stemming from its history as a borderland. But one specific year marked a huge turning point, making the Foscagno Pass accessible even in win",
@@ -62,7 +62,7 @@
       "Livigno is gearing up for the 2026 freestyle events! Your mission today: **Capture the spirit of freestyle!** Find a small kicker or natural jump and show us your best (and safest!) air or trick. Or, ",
       "Livigno is gearing up to host the Olympic Freestyle events, so let's get into the spirit!\nYour mission today: Conquer the **Diagonale run** for its breathtaking panoramic views. While you're soaking i"
     ],
-    "last_run": "2026-01-26T07:50:11.830123"
+    "last_run": "2026-01-26T17:56:31.349393"
   },
   "les_arcs": {
     "seen_urls": [
