@@ -37,3 +37,12 @@ def send_telegram_message(message: str, chat_id: str = None):
     except requests.RequestException as e:
         print(f"❌ Error sending Telegram message: {e}")
         return {}
+
+if __name__ == "__main__":
+    import sys
+    test_msg = "🤖 Brrrnando Telegram Test Message"
+    if len(sys.argv) > 1:
+        test_msg = " ".join(sys.argv[1:])
+    
+    print(f"Testing Telegram integration with message: {test_msg}")
+    send_telegram_message(test_msg)

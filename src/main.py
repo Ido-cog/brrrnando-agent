@@ -37,6 +37,7 @@ def main():
     parser.add_argument("--mode", choices=["morning", "evening"], required=True, help="Run mode (morning/evening)")
     parser.add_argument("--dry-run", action="store_true", help="Do not send messages, just print output")
     parser.add_argument("--no-state", action="store_true", help="Do not update or save state (seen URLs, etc.)")
+    parser.add_argument("--provider", choices=["whatsapp", "telegram", "both"], default="both", help="Message provider (default: both)")
     args = parser.parse_args()
     
     tz = pytz.timezone("Asia/Jerusalem")
@@ -171,8 +172,10 @@ def main():
             print("----------------------------------------------\n")
         else:
             print(f"Sending message for {trip.resort_name}...")
-            send_whatsapp_message(final_message)
-            send_telegram_message(final_message)
+            if args.provider in ["whatsapp", "both"]:
+                send_whatsapp_message(final_message)
+            if args.provider in ["telegram", "both"]:
+                send_telegram_message(final_message)
 
         # Update State
         if not args.no_state:
