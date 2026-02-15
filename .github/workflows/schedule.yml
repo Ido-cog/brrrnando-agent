@@ -25,6 +25,15 @@ on:
         options:
         - morning
         - evening
+      provider:
+        description: 'Message provider'
+        required: true
+        default: 'both'
+        type: choice
+        options:
+        - both
+        - telegram
+        - whatsapp
 
 jobs:
   run-agent:
@@ -72,7 +81,8 @@ jobs:
         run: |
           ACTION="${{ inputs.action || 'run' }}"
           if [ "$ACTION" == "run" ]; then
-            python -m src.main --mode ${{ steps.mode.outputs.mode }}
+            PROVIDER="${{ inputs.provider || 'both' }}"
+            python -m src.main --mode ${{ steps.mode.outputs.mode }} --provider $PROVIDER
           elif [ "$ACTION" == "ping" ]; then
             python scripts/ping_whatsapp.py
           elif [ "$ACTION" == "reset-memory" ]; then
