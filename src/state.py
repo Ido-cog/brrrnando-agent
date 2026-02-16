@@ -102,3 +102,20 @@ def store_message(resort_state: Dict, message: str, phase: str, mode: str):
     messages.append(message_entry)
     # Keep only the last MAX_STORED_MESSAGES
     resort_state["recent_messages"] = messages[-MAX_STORED_MESSAGES:]
+
+def was_weekly_sent_this_week(resort_state: Dict) -> bool:
+    """Check if a planning_weekly message was already sent this week (Monday)."""
+    messages = resort_state.get("recent_messages", [])
+    now = datetime.now()
+    
+    # Get the date of the most recent Monday
+    import datetime as dt
+    monday = now - dt.timedelta(days=now.weekday())
+    monday_date = monday.date()
+    
+    for msg in messages:
+        if msg.get("phase") == "planning_weekly":
+            ts = datetime.fromisoformat(msg.get("timestamp"))
+            if ts.date() >= monday_date:
+                return True
+    return False

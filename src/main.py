@@ -16,7 +16,7 @@ from .discovery import DiscoveryEngine
 from .state import (load_state, save_state, get_resort_state, mark_url_seen, 
                     update_last_run, get_seen_trivia, get_seen_challenges,
                     mark_trivia_seen, mark_challenge_seen, get_recent_messages,
-                    store_message)
+                    store_message, was_weekly_sent_this_week)
 from .extraction import extract_trivia, extract_challenge
 
 def load_trips(path: str = "trips.json") -> List[Trip]:
@@ -68,9 +68,14 @@ def main():
             if now.weekday() != 0: # 0 = Monday
                 print("Skipping Weekly update (not Monday).")
                 continue
+            
+            # If it's Monday, we allow it even in evening mode IF it hasn't been sent yet
+            if was_weekly_sent_this_week(resort_state):
+                print("Weekly update already sent for this resort this week. Skipping.")
+                continue
+            
             if args.mode != "morning":
-                 print("Skipping Weekly update (not Morning).")
-                 continue
+                 print("Monday identified. Morning run missed or manual trigger. Proceeding with Weekly update.")
 
         # Get resort-specific state
         resort_state = get_resort_state(state, trip.resort_name)
