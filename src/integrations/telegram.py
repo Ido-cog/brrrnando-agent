@@ -28,6 +28,15 @@ def send_telegram_message(message: str, chat_id: str = None):
         
         if response.status_code == 200:
             print(f"✅ Message sent successfully to Telegram chat {recipient}")
+        elif response.status_code == 400 and "can't parse entities" in response.text:
+            print("⚠️ Telegram failed to parse Markdown. Retrying as plain text...")
+            del data["parse_mode"]
+            response = requests.post(url, json=data, timeout=10)
+            if response.status_code == 200:
+                print("✅ Message sent successfully as plain text.")
+            else:
+                print(f"❌ Still failed to send as plain text. Status: {response.status_code}")
+                print(f"Error details: {response.text}")
         else:
             print(f"❌ Message failed to send to Telegram. Status: {response.status_code}")
             print(f"Error details: {response.text}")
