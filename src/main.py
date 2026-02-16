@@ -71,6 +71,9 @@ def main():
         phase = determine_phase(trip, current_date)
         print(f"Trip: {trip.resort_name}, Phase: {phase.value}")
         
+        # Get resort-specific state
+        resort_state = get_resort_state(state, trip.resort_name)
+
         if phase in [Phase.WAIT, Phase.POST]:
             print("Skipping trip (inactive phase).")
             continue
@@ -87,9 +90,6 @@ def main():
             
             if args.mode != "morning":
                  print("Monday identified. Morning run missed or manual trigger. Proceeding with Weekly update.")
-
-        # Get resort-specific state
-        resort_state = get_resort_state(state, trip.resort_name)
 
         # Gather Weather Data
         weather_info = {}
