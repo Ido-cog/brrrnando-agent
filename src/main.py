@@ -38,11 +38,22 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Do not send messages, just print output")
     parser.add_argument("--no-state", action="store_true", help="Do not update or save state (seen URLs, etc.)")
     parser.add_argument("--provider", choices=["whatsapp", "telegram", "both"], default="both", help="Message provider (default: both)")
+    parser.add_argument("--date", help="Override current date (YYYY-MM-DD) for debugging")
     args = parser.parse_args()
     
     tz = pytz.timezone("Asia/Jerusalem")
-    now = datetime.now(tz)
-    current_date = now.date()
+    if args.date:
+        try:
+            now = datetime.strptime(args.date, "%Y-%m-%d")
+            now = tz.localize(now)
+            current_date = now.date()
+            print(f"DATE OVERRIDE: Using provided date {current_date}")
+        except ValueError:
+            print(f"Invalid date format: {args.date}. Expected YYYY-MM-DD.")
+            sys.exit(1)
+    else:
+        now = datetime.now(tz)
+        current_date = now.date()
     
     print(f"Running Brrrnando in {args.mode} mode. Date: {current_date}")
     if args.no_state:

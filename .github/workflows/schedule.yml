@@ -34,6 +34,11 @@ on:
         - both
         - telegram
         - whatsapp
+      date_override:
+        description: 'Date override (YYYY-MM-DD) - only for debugging'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   run-agent:
@@ -82,7 +87,11 @@ jobs:
           ACTION="${{ inputs.action || 'run' }}"
           if [ "$ACTION" == "run" ]; then
             PROVIDER="${{ inputs.provider || 'both' }}"
-            python -m src.main --mode ${{ steps.mode.outputs.mode }} --provider $PROVIDER
+            DATE_ARG=""
+            if [ -n "${{ inputs.date_override }}" ]; then
+              DATE_ARG="--date ${{ inputs.date_override }}"
+            fi
+            python -m src.main --mode ${{ steps.mode.outputs.mode }} --provider $PROVIDER $DATE_ARG
           elif [ "$ACTION" == "ping" ]; then
             python scripts/ping_whatsapp.py
           elif [ "$ACTION" == "reset-memory" ]; then
