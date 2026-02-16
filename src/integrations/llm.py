@@ -253,3 +253,32 @@ def generate_summary(prompt: str) -> str:
     model = _get_model()
     response = _call_with_retry(model.generate_content, prompt)
     return response.text
+
+def fix_telegram_markdown(text: str) -> str:
+    """
+    Uses LLM to fix markdown for Telegram's strict parser.
+    """
+    model = _get_model()
+    prompt = f"""
+    The following text is intended for the Telegram Bot API using 'Markdown' (V1) parse mode.
+    Telegram's V1 parser is extremely strict and will fail if:
+    - Underscores (_), asterisks (*), or backticks (`) are not properly closed.
+    - Entities are nested incorrectly.
+    
+    TEXT TO FIX:
+    ---
+    {text}
+    ---
+    
+    TASK:
+    Fix the markdown so it's valid for Telegram V1. 
+    1. Ensure all formatting marks (*, _, `) are closed.
+    2. If a link [text](url) is broken, fix it.
+    3. If there are nested underscores inside words (like file_name_test), escape them with a backslash if they aren't meant to be italics.
+    4. Maintain the original message content as much as possible.
+    
+    Return ONLY the fixed text, nothing else.
+    """
+    
+    response = _call_with_retry(model.generate_content, prompt)
+    return response.text.strip()

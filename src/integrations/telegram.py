@@ -1,6 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+from .llm import fix_telegram_markdown
 
 load_dotenv()
 
@@ -29,14 +30,23 @@ def send_telegram_message(message: str, chat_id: str = None):
         if response.status_code == 200:
             print(f"✅ Message sent successfully to Telegram chat {recipient}")
         elif response.status_code == 400 and "can't parse entities" in response.text:
-            print("⚠️ Telegram failed to parse Markdown. Retrying as plain text...")
-            del data["parse_mode"]
+            print("⚠️ Telegram failed to parse Markdown. Attempting LLM fix...")
+            fixed_text = fix_telegram_markdown(message)
+            data["text"] = fixed_text
+            
             response = requests.post(url, json=data, timeout=10)
             if response.status_code == 200:
-                print("✅ Message sent successfully as plain text.")
+                print("✅ Message sent successfully with LLM-fixed Markdown.")
             else:
-                print(f"❌ Still failed to send as plain text. Status: {response.status_code}")
-                print(f"Error details: {response.text}")
+                print("⚠️ LLM-fixed Markdown also failed. Falling back to plain text...")
+                del data["parse_mode"]
+                data["text"] = message # Use original message for plain text to avoid LLM "halucinations" in the fix
+                response = requests.post(url, json=data, timeout=10)
+                if response.status_code == 200:
+                    print("✅ Message sent successfully as plain text.")
+                else:
+                    print(f"❌ Still failed to send as plain text. Status: {response.status_code}")
+                    print(f"Error details: {response.text}")
         else:
             print(f"❌ Message failed to send to Telegram. Status: {response.status_code}")
             print(f"Error details: {response.text}")
