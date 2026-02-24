@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://us.j2ski.com/snow_forecast/France/Les_Arcs_snow.html",
-      "https://www.onthesnow.co.uk/northern-alps/les-arcs-bourg-st-maurice/weather",
-      "https://us.j2ski.com/snow_forecast/France/Les_Arcs_weather.html",
-      "https://www.powderhounds.com/Europe/France/Les-Arcs.aspx",
-      "https://www.snow-forecast.com/resorts/Les-Arcs",
       "https://www.seelesarcs.com/snow/",
       "https://www.30dayweather.com/en/d/republic-of-france/provence-alpes-cote-d-azur/les-arcs/",
       "https://www.myweather2.com/City-Town/France/Les-Arcs/14-Day-Forecast.aspx",
@@ -115,10 +110,15 @@
       "https://www.webcamtaxi.com/en/france/auvergne-rhone-alpes/arc-1800-village.html",
       "https://www.lemadly.com/",
       "https://www.lesarcs.com/que-faire-aux-arcs/evenements/ski-show",
-      "https://www.bourgsaintmaurice.fr/agenda"
+      "https://www.bourgsaintmaurice.fr/agenda",
+      "https://www.instagram.com/explore/locations/493338069/les-arcs/",
+      "https://en.lesarcs.com/blog/whats-new-in-the-2025/2026-winter-season",
+      "https://www.snow-forecast.com/resorts/Les-Arcs/webcams/latest",
+      "https://en.lesarcs.com/events-les-arcs/",
+      "https://www.seelesarcs.com/events/main"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-02-23T17:56:18.891311"
+    "last_run": "2026-02-24T07:53:52.477399"
   }
 }
