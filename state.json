@@ -66,9 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.instagram.com/explore/locations/213023408/les-arcs/",
-      "https://www.youtube.com/watch?v=VZrIHay_KeY",
-      "https://www.seelesarcs.com/news/",
       "https://en.lesarcs.com/powder-alert",
       "https://www.youtube.com/watch?v=SXXHa5SoAHo",
       "https://www.seelesarcs.com/webcams/",
@@ -115,10 +112,13 @@
       "https://www.snow-forecast.com/resorts/Les-Arcs/snow-report",
       "https://en.lesarcs.com/going-out",
       "https://www.lafoliedouce.com/en/les-arcs-restaurant.html",
-      "https://www.seelesarcs.com/restaurants/le-2134-rooftop-restaurant-le-arcs-2000-746652"
+      "https://www.seelesarcs.com/restaurants/le-2134-rooftop-restaurant-le-arcs-2000-746652",
+      "https://www.facebook.com/lesarcs/videos/randonn%C3%A9e-des-cinq-lacs-les-arcs/209933140438259/",
+      "https://www.instagram.com/explore/locations/464858761/les-arcs/",
+      "https://www.ultimatefrance.com/webcams/les-arcs"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-02-25T17:53:26.348995"
+    "last_run": "2026-02-26T07:53:31.901297"
   }
 }
