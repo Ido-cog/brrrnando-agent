@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.skylinewebcams.com/en/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs-snowpark.html",
-      "https://snowstash.com/news/2026/02/level-5-avalanche-alert-french-resort-closures",
-      "https://www.sno.co.uk/blog/les-arcs-apres-ski-bars-nightlife/",
-      "https://www.skiweekends.com/ski-resorts/les-arcs/guide/apres-ski",
-      "https://www.tripadvisor.com/Restaurants-g1118194-Les_Arcs_Bourg_Saint_Maurice_Savoie_Auvergne_Rhone_Alpes.html",
       "https://www.facebook.com/groups/SCGBLesarcs/posts/2655242371341898/",
       "https://www.seelesarcs.com/bars/",
       "https://www.arc1950.com/en/the-webcams-arc-1950-1445",
@@ -115,10 +110,15 @@
       "https://www.seelesarcs.com/restaurants/restaurants-in-les-arcs",
       "https://www.instagram.com/lesarcs/reels/?hl=en",
       "https://www.youtube.com/watch?v=9UV2_xuxvwc",
-      "https://www.seelesarcs.com/webcams/"
+      "https://www.seelesarcs.com/webcams/",
+      "https://www.instagram.com/explore/locations/213023408/les-arcs/",
+      "https://www.instagram.com/lesarcs/",
+      "https://www.igluski.com/blog/post/les-arcs-best-apres-nightlife",
+      "https://en.lesarcs.com/news/les-arcs-summer-calendar",
+      "https://x.com/Les_Arcs_ski"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-02-27T07:49:58.281845"
+    "last_run": "2026-02-27T17:28:52.303690"
   }
 }
