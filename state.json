@@ -66,9 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.igluski.com/blog/post/les-arcs-best-apres-nightlife",
-      "https://www.topsnowtravel.com/top-5-apres-ski-bars-les-arcs/",
-      "https://www.arc1950.com/en/events",
       "https://www.skylinewebcams.com/en/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs-snowpark.html",
       "https://snowstash.com/news/2026/02/level-5-avalanche-alert-french-resort-closures",
       "https://www.sno.co.uk/blog/les-arcs-apres-ski-bars-nightlife/",
@@ -115,10 +112,13 @@
       "https://www.seelesarcs.com/news/",
       "https://www.seelesarcs.com/nightlife/",
       "https://www.snowtrex.us/france/les_arcs/ski-area.html",
-      "https://www.seelesarcs.com/restaurants/restaurants-in-les-arcs"
+      "https://www.seelesarcs.com/restaurants/restaurants-in-les-arcs",
+      "https://www.instagram.com/lesarcs/reels/?hl=en",
+      "https://www.youtube.com/watch?v=9UV2_xuxvwc",
+      "https://www.seelesarcs.com/webcams/"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-02-26T17:53:35.809411"
+    "last_run": "2026-02-27T07:49:58.281845"
   }
 }
