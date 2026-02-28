@@ -66,8 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.facebook.com/groups/SCGBLesarcs/posts/2655242371341898/",
-      "https://www.seelesarcs.com/bars/",
       "https://www.arc1950.com/en/the-webcams-arc-1950-1445",
       "https://www.skylinewebcams.com/en/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs.html",
       "https://en.lesarcs.com/week-in-winter/the-events-programme",
@@ -115,10 +113,12 @@
       "https://www.instagram.com/lesarcs/",
       "https://www.igluski.com/blog/post/les-arcs-best-apres-nightlife",
       "https://en.lesarcs.com/news/les-arcs-summer-calendar",
-      "https://x.com/Les_Arcs_ski"
+      "https://x.com/Les_Arcs_ski",
+      "https://www.facebook.com/lesarcs/videos/en-direct-belle-quantit%C3%A9-de-neige-%C3%A0-arc-1800-apr%C3%A8s-les-chutes-de-ces-derni%C3%A8res-h/451672722870466/",
+      "https://en.lesarcs.com/going-out/"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-02-27T17:28:52.303690"
+    "last_run": "2026-02-28T07:31:43.699682"
   }
 }
