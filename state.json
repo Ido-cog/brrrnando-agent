@@ -66,9 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://en.lesarcs.com/bars/",
-      "https://www.facebook.com/lesarcs/videos/en-direct-et-%C3%A7a-continue-encore-et-encore-live-and-its-still-snowing-here-in-les/10154217113991759/",
-      "https://www.snow-forecast.com/resorts/Les-Arcs/snow-report",
       "https://en.lesarcs.com/going-out",
       "https://www.lafoliedouce.com/en/les-arcs-restaurant.html",
       "https://www.seelesarcs.com/restaurants/le-2134-rooftop-restaurant-le-arcs-2000-746652",
@@ -115,10 +112,13 @@
       "https://www.skylinewebcams.com/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs.html",
       "https://en.lesarcs.com/webcams-1",
       "https://en.lesarcs.com/events-les-arcs/",
-      "https://www.seelesarcs.com/events/main"
+      "https://www.seelesarcs.com/events/main",
+      "https://www.skiresort.info/ski-resort/les-arcs-peisey-vallandry-paradiski/snow-report/",
+      "https://en.lesarcs.com/pro-area/les-arcs-press-area",
+      "https://alpencams.com/skiresorts/3/france/162/les-arcs-paradiski/webcams"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-03-02T07:51:52.919783"
+    "last_run": "2026-03-02T17:38:25.347972"
   }
 }
