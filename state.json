@@ -66,12 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://xist.fr/category/calendar/",
-      "https://snowheads.com/ski-forum/viewtopic.php?t=128256&view=next",
-      "https://www.telegraph.co.uk/travel/ski/resort-guides/les-arcs-best-restaurants/",
-      "https://www.facebook.com/reel/1249373389881558/",
-      "https://en.lesarcs.com/news/whats-new-on-the-slopes",
-      "https://en.lesarcs.com/livecams",
       "https://en.lesarcs.com/bars/",
       "https://www.facebook.com/lesarcs/videos/en-direct-et-%C3%A7a-continue-encore-et-encore-live-and-its-still-snowing-here-in-les/10154217113991759/",
       "https://www.snow-forecast.com/resorts/Les-Arcs/snow-report",
@@ -115,10 +109,16 @@
       "https://laplagne360.com/les-arcs-livecam-varet/",
       "https://www.snow-forecast.com/resorts/Les-Arcs/webcams/latest",
       "https://www.skylinewebcams.com/en/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs.html",
-      "https://www.topsnowtravel.com/top-5-apres-ski-bars-les-arcs/"
+      "https://www.topsnowtravel.com/top-5-apres-ski-bars-les-arcs/",
+      "https://opensnow.com/location/frlesarcs/snow-report",
+      "https://en.lesarcs.com/blog/whats-new-in-the-2025/2026-winter-season",
+      "https://www.skylinewebcams.com/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs.html",
+      "https://en.lesarcs.com/webcams-1",
+      "https://en.lesarcs.com/events-les-arcs/",
+      "https://www.seelesarcs.com/events/main"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-03-01T17:16:37.956819"
+    "last_run": "2026-03-02T07:51:52.919783"
   }
 }
