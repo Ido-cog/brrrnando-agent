@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://en.lesarcs.com/going-out",
-      "https://www.lafoliedouce.com/en/les-arcs-restaurant.html",
-      "https://www.seelesarcs.com/restaurants/le-2134-rooftop-restaurant-le-arcs-2000-746652",
-      "https://www.facebook.com/lesarcs/videos/randonn%C3%A9e-des-cinq-lacs-les-arcs/209933140438259/",
-      "https://www.instagram.com/explore/locations/464858761/les-arcs/",
       "https://www.ultimatefrance.com/webcams/les-arcs",
       "https://www.youtube.com/watch?v=VZrIHay_KeY",
       "https://en.lesarcs.com/mountain-area/mountain-area/snow-report",
@@ -115,10 +110,15 @@
       "https://www.seelesarcs.com/events/main",
       "https://www.skiresort.info/ski-resort/les-arcs-peisey-vallandry-paradiski/snow-report/",
       "https://en.lesarcs.com/pro-area/les-arcs-press-area",
-      "https://alpencams.com/skiresorts/3/france/162/les-arcs-paradiski/webcams"
+      "https://alpencams.com/skiresorts/3/france/162/les-arcs-paradiski/webcams",
+      "https://www.snow-forecast.com/resorts/Les-Arcs/snow-report",
+      "https://www.instagram.com/p/DUfplPxDA0s/",
+      "https://en.lesarcs.com/livecams",
+      "https://laplagne360.com/les-arcs-live/",
+      "https://www.seelesarcs.com/lifts/status"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-03-02T17:38:25.347972"
+    "last_run": "2026-03-03T07:45:48.759203"
   }
 }
