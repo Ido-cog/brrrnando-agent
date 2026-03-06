@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.snow-forecast.com/resorts/Les-Arcs/webcams/latest",
-      "https://www.skylinewebcams.com/en/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs.html",
-      "https://www.topsnowtravel.com/top-5-apres-ski-bars-les-arcs/",
-      "https://opensnow.com/location/frlesarcs/snow-report",
-      "https://en.lesarcs.com/blog/whats-new-in-the-2025/2026-winter-season",
       "https://www.skylinewebcams.com/webcam/france/auvergne-rhone-alpes/bourg-saint-maurice/les-arcs.html",
       "https://en.lesarcs.com/webcams-1",
       "https://en.lesarcs.com/events-les-arcs/",
@@ -115,10 +110,15 @@
       "https://www.skimcneill.com/ski/france/les_arcs/arc_1800",
       "https://www.skisolutions.com/blog/best-les-arcs-apres-ski-and-nightlife",
       "https://www.tripadvisor.com/Restaurants-g1118194-Les_Arcs_Bourg_Saint_Maurice_Savoie_Auvergne_Rhone_Alpes.html",
-      "https://www.thefork.com/restaurants/les-arcs-c309274"
+      "https://www.thefork.com/restaurants/les-arcs-c309274",
+      "https://en.lesarcs.com/state-of-the-roads",
+      "https://maps.google.com/",
+      "https://weather.com/weather/tenday/l/Les+Arcs+Var+France?canonicalCityId=8844579cea5a2ddb5229cd2cc9f556c6",
+      "https://en.lesarcs.com/live/weather",
+      "https://www.bensbus.co.uk/ski-transfer/les-arcs-airport-transfers/"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-03-05T18:46:47.806539"
+    "last_run": "2026-03-06T07:41:14.696071"
   }
 }
