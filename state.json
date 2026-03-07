@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.seelesarcs.com/events/main",
-      "https://www.skiresort.info/ski-resort/les-arcs-peisey-vallandry-paradiski/snow-report/",
-      "https://en.lesarcs.com/pro-area/les-arcs-press-area",
-      "https://alpencams.com/skiresorts/3/france/162/les-arcs-paradiski/webcams",
-      "https://www.snow-forecast.com/resorts/Les-Arcs/snow-report",
       "https://www.instagram.com/p/DUfplPxDA0s/",
       "https://en.lesarcs.com/livecams",
       "https://laplagne360.com/les-arcs-live/",
@@ -115,10 +110,15 @@
       "https://www.bensbus.co.uk/ski-transfer/les-arcs-airport-transfers/",
       "https://laplagne360.com/les-arcs-road-conditions-and-highway-cams/",
       "https://www.snowcarbon.co.uk/ski-resorts/les-arcs/les-arcs-transfer-guide",
-      "https://www.seelesarcs.com/transfers/guide"
+      "https://www.seelesarcs.com/transfers/guide",
+      "https://www.ifly.com/airports/cheyenne-airport/airport-lounges",
+      "https://www.seelesarcs.com/airports/",
+      "https://www.flightaware.com/live/",
+      "https://www.flightradar24.com/",
+      "https://en.lesarcs.com/prepare-your-stay/coming-to-les-arcs"
     ],
     "seen_trivia": [],
     "seen_challenges": [],
-    "last_run": "2026-03-06T17:28:33.524159"
+    "last_run": "2026-03-07T07:33:08.247657"
   }
 }
