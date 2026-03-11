@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://en.lesarcs.com/lifts-slopes-status",
-      "https://en.lesarcs.com/week-in-winter/to-do-list",
-      "https://www.facebook.com/lesarcs/videos/en-direct-des-pistes-les-arcs/10155221282276759/",
-      "https://www.seelesarcs.com/lifts/status",
-      "https://www.youtube.com/watch?v=eG0_dmzBTaA",
       "https://www.skiweekends.com/ski-resorts/les-arcs/guide/activities-and-events",
       "https://en.chalets-mille8.com/blog/evenements-a-venir-aux-arcs",
       "https://www.topsnowtravel.com/top-5-apres-ski-bars-les-arcs/",
@@ -115,18 +110,24 @@
       "https://en.lesarcs.com/restaurants",
       "https://www.seelesarcs.com/restaurants/guide",
       "https://en.lesarcs.com/events-les-arcs/",
-      "https://www.seelesarcs.com/events/main"
+      "https://www.seelesarcs.com/events/main",
+      "https://www.facebook.com/arcsvaluevillage/videos/cyber-monday-at-arcs-value-village-has-begun/362319016264687/",
+      "https://www.esquiades.com/en/skiresort/les-arcs/webcams/",
+      "https://en.lesarcs.com/livecams",
+      "https://www.seelesarcs.com/news/",
+      "https://www.facebook.com/lesarcs/"
     ],
     "seen_trivia": [
       "Test your Les Arcs knowledge! The Vanoise Express cable car, connecting Les Arcs/Peisey-Vallandry to La Plagne, is renowned globally. Do you know it's the **largest cable car in the world**, covering ",
       "Did you know that the distinct 'Arcs' in Les Arcs (like Les Arcs 1600, 1800, 1950, and 2000) aren't just cool names? They actually correspond to their approximate altitude in meters, giving each villa",
       "Think you know Les Arcs? The **Les Arcs funicular** connecting Bourg-Saint-Maurice and Arc 1600 is not just fast (it takes only 7 minutes!), it's also the **ONLY aerial funicular in France!** How cool",
-      "Did you know Les Arcs is celebrating a massive milestone this winter? It's the resort's **50th birthday!** The first hotel actually opened back in **1968** in Arc 1600, with the full resort completing"
+      "Did you know Les Arcs is celebrating a massive milestone this winter? It's the resort's **50th birthday!** The first hotel actually opened back in **1968** in Arc 1600, with the full resort completing",
+      "Did you know Les Arcs is famous for its groundbreaking architecture? The resort was designed by visionary architects like Robert Blanc and Charlotte Perriand, pioneers of the *modern ski resort concep"
     ],
     "seen_challenges": [
       "**Aiguille Rouge Summit Selfie!**\nToday, your mission, should you accept it, is to conquer the iconic **Aiguille Rouge**! Ride the cable car to its majestic summit station (reaching **3226m!**) and ca",
       "Alright snow bandits, today's mission, should you choose to accept it, is to conquer a hidden gem! We're talking about the **Malgovert black run**! It's touted as the best hidden secret in Les Arcs an"
     ],
-    "last_run": "2026-03-11T07:47:41.811024"
+    "last_run": "2026-03-11T17:43:32.600149"
   }
 }
