@@ -66,11 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.ultimate-ski.com/ski-resorts/france/les-arcs/apres-ski/",
-      "https://www.telegraph.co.uk/travel/ski/resort-guides/les-arcs-best-restaurants/",
-      "https://www.youtube.com/watch?v=s3mxUZ5B1jM",
-      "https://www.seelesarcs.com/events/?on=2022-08-10",
-      "https://emeraldstay.com/les-arcs/resort",
       "https://www.youtube.com/watch?v=DvBk5nAhmnc",
       "https://accidentallywesanderson.com/places/les-arcs/",
       "https://en.lesarcs.com/webcams-1",
@@ -115,7 +110,12 @@
       "https://www.seelesarcs.com/transfers/guide",
       "https://en.lesarcs.com/live/weather",
       "https://www.snowcarbon.co.uk/ski-resorts/les-arcs/les-arcs-transfer-guide",
-      "https://www.skicab.com/transfers/les-arcs/"
+      "https://www.skicab.com/transfers/les-arcs/",
+      "https://www.flydulles.com/travel-information/services-amenities/airport-lounges",
+      "https://upgradedpoints.com/travel/airports/washington-dulles-iad-airport-lounges/",
+      "https://www.flightstats.com/v2/flight-tracker/search",
+      "https://www.flightaware.com/live/",
+      "https://www.cosmopolitan.com/uk/lifestyle/travel/a42966251/les-arcs-resort-guide-hotels-restaurants-skiing/"
     ],
     "seen_trivia": [
       "Test your Les Arcs knowledge! The Vanoise Express cable car, connecting Les Arcs/Peisey-Vallandry to La Plagne, is renowned globally. Do you know it's the **largest cable car in the world**, covering ",
@@ -130,6 +130,6 @@
       "**Aiguille Rouge Summit Selfie!**\nToday, your mission, should you accept it, is to conquer the iconic **Aiguille Rouge**! Ride the cable car to its majestic summit station (reaching **3226m!**) and ca",
       "Alright snow bandits, today's mission, should you choose to accept it, is to conquer a hidden gem! We're talking about the **Malgovert black run**! It's touted as the best hidden secret in Les Arcs an"
     ],
-    "last_run": "2026-03-13T17:28:52.467434"
+    "last_run": "2026-03-14T07:38:15.159927"
   }
 }
