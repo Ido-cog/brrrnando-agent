@@ -66,10 +66,6 @@
   },
   "les_arcs": {
     "seen_urls": [
-      "https://www.youtube.com/watch?v=DvBk5nAhmnc",
-      "https://accidentallywesanderson.com/places/les-arcs/",
-      "https://en.lesarcs.com/webcams-1",
-      "https://www.onthesnow.co.uk/northern-alps/les-arcs-bourg-st-maurice/webcams",
       "https://www.youtube.com/watch?v=r6fYzS9Pjew",
       "https://www.youtube.com/watch?v=zZbIN0Zc_wA",
       "https://www.skiworld.co.uk/blog/an-insiders-guide-to-les-arcs-ski-resort/",
@@ -115,7 +111,11 @@
       "https://upgradedpoints.com/travel/airports/washington-dulles-iad-airport-lounges/",
       "https://www.flightstats.com/v2/flight-tracker/search",
       "https://www.flightaware.com/live/",
-      "https://www.cosmopolitan.com/uk/lifestyle/travel/a42966251/les-arcs-resort-guide-hotels-restaurants-skiing/"
+      "https://www.cosmopolitan.com/uk/lifestyle/travel/a42966251/les-arcs-resort-guide-hotels-restaurants-skiing/",
+      "https://www.seelesarcs.com/airports/",
+      "https://www.seelesarcs.com/getting-here",
+      "https://en.lacachette-lesarcs.com/news/5-conseils-pour-un-sejour-aux-arcs-reussi",
+      "https://en.lesarcs.com/prepare-your-stay/coming-to-les-arcs"
     ],
     "seen_trivia": [
       "Test your Les Arcs knowledge! The Vanoise Express cable car, connecting Les Arcs/Peisey-Vallandry to La Plagne, is renowned globally. Do you know it's the **largest cable car in the world**, covering ",
@@ -130,6 +130,6 @@
       "**Aiguille Rouge Summit Selfie!**\nToday, your mission, should you accept it, is to conquer the iconic **Aiguille Rouge**! Ride the cable car to its majestic summit station (reaching **3226m!**) and ca",
       "Alright snow bandits, today's mission, should you choose to accept it, is to conquer a hidden gem! We're talking about the **Malgovert black run**! It's touted as the best hidden secret in Les Arcs an"
     ],
-    "last_run": "2026-03-14T07:38:15.159927"
+    "last_run": "2026-03-14T17:20:52.372076"
   }
 }
